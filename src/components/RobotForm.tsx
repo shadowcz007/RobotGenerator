@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Robot, generateRandomRobot } from '../utils/robotGenerator';
 import { Shuffle } from 'lucide-react';
 import { Button } from "@/components/ui/button"
@@ -14,83 +14,66 @@ interface RobotFormProps {
 const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, onRandomize }) => {
   const [formData, setFormData] = React.useState<Robot>(initialData);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, category: keyof Robot, subCategory?: string, field?: string) => {
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>, category: keyof Robot, subCategory?: string, field?: string) => {
     const { value } = e.target;
-    setFormData((prev) => {
+    setFormData((prev: any) => {
+      const newState = { ...prev };
       if (subCategory && field) {
-        return {
-          ...prev,
-          [category]: {
-            ...prev[category],
-            [subCategory]: {
-              ...prev[category][subCategory],
-              [field]: value,
-            },
-          },
-        };
+        newState[category][subCategory][field] = value;
       } else if (subCategory) {
-        return {
-          ...prev,
-          [category]: {
-            ...prev[category],
-            [subCategory]: value,
-          },
-        };
+        newState[category][subCategory] = value;
       } else {
-        return {
-          ...prev,
-          [category]: value,
-        };
+        newState[category] = value;
       }
+      return newState;
     });
-  };
+  }, []);
 
-  const handleRandomField = (category: keyof Robot, subCategory?: string, field?: string) => {
-    const newRobot = generateRandomRobot();
-    if (subCategory && field) {
-      setFormData((prev) => ({
-        ...prev,
-        [category]: {
-          ...prev[category],
-          [subCategory]: {
-            ...prev[category][subCategory],
-            [field]: newRobot[category][subCategory][field],
-          },
-        },
-      }));
-    } else if (subCategory) {
-      setFormData((prev) => ({
-        ...prev,
-        [category]: {
-          ...prev[category],
-          [subCategory]: newRobot[category][subCategory],
-        },
-      }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        [category]: newRobot[category],
-      }));
-    }
-  };
+  const handleRandomField = useCallback((category: keyof Robot, subCategory?: string, field?: string) => {
+    const newRobot: any = generateRandomRobot();
+    setFormData((prev: any) => {
+      const newState = { ...prev };
+
+      if (subCategory && field) {
+        // 三级嵌套的情况
+        if (!newState[category]) newState[category] = {};
+        if (!newState[category][subCategory]) newState[category][subCategory] = {};
+        newState[category][subCategory][field] = newRobot[category][subCategory][field];
+      } else if (subCategory) {
+        // 二级嵌套的情况
+        if (!newState[category]) newState[category] = {};
+        newState[category][subCategory] = newRobot[category][subCategory];
+      } else {
+        // 二级嵌套的情况，只更新 field 的值
+        if (!newState[category]) newState[category] = {};
+        for (const key in newRobot[category]) {
+          if (newRobot[category].hasOwnProperty(key)) {
+            newState[category][key] = newRobot[category][key];
+          }
+        }
+      }
+
+      return newState;
+    });
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit(formData);
   };
 
-  const InputWithRandom = ({ 
-    category, 
-    subCategory, 
-    field, 
-    value, 
-    onChange 
-  }: { 
-    category: keyof Robot, 
-    subCategory?: string, 
-    field: string, 
-    value: string, 
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void 
+  const InputWithRandom = useMemo(() => ({
+    category,
+    subCategory,
+    field,
+    value,
+    onChange
+  }: {
+    category: keyof Robot,
+    subCategory?: string,
+    field: string,
+    value: string,
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   }) => (
     <div className="flex items-center space-x-2 mt-2">
       <Input
@@ -109,7 +92,7 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, onRandomiz
         <Shuffle className="h-4 w-4" />
       </Button>
     </div>
-  );
+  ), [handleRandomField]);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -203,7 +186,10 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, onRandomiz
       <div className="flex space-x-4">
         <Button
           type="button"
-          onClick={onRandomize}
+          onClick={() => {
+            const newRobot: any = generateRandomRobot();
+            setFormData(newRobot)
+          }}
           variant="outline"
           className="flex items-center"
         >
@@ -213,8 +199,9 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, onRandomiz
           Generate Image
         </Button>
       </div>
-    </form>
+    </form >
   );
 };
 
 export default RobotForm;
+
