@@ -127,7 +127,7 @@ function App() {
               <div className="space-y-2">
                 <Label htmlFor="head-shape">Siliconflow API密钥</Label>
                 <Input
-                  type="text"
+                  type="password"
                   value={apiKey}
                   onChange={(e) => {
                     // console.log(e.target.value)
