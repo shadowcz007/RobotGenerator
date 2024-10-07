@@ -141,7 +141,6 @@ function App() {
               <RobotForm
                 initialData={robot}
                 onSubmit={handleSubmit}
-                onRandomize={() => setRobot(generateRandomRobot())}
               />
             </div>
           </div>
