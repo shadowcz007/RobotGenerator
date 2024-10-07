@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
 function App() {
-  const [robot, setRobot] = useState<Robot>(generateRandomRobot());
+  const [robot, _] = useState<Robot>(generateRandomRobot());
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [apiKey, setApiKey] = useState(localStorage.getItem("_apiKey") || "");
 
