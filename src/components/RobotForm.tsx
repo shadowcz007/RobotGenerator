@@ -7,11 +7,10 @@ import { Label } from "@/components/ui/label"
 
 interface RobotFormProps {
   initialData: Robot;
-  onSubmit: (data: Robot) => void;
-  onRandomize: () => void;
+  onSubmit: (data: Robot) => void; 
 }
 
-const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, onRandomize }) => {
+const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit }) => {
   const [formData, setFormData] = React.useState<Robot>(initialData);
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>, category: keyof Robot, subCategory?: string, field?: string) => {
