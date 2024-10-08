@@ -20,7 +20,8 @@ const resources = {
       "Material": "Material",
       "Randomize All": "Randomize All",
       "Generate Image": "Generate Image",
-      "Composition":"Composition"
+      "Composition":"Composition",
+      "Basic":"Basic"
     }
   },
   zh: {
@@ -39,7 +40,8 @@ const resources = {
       "Material": "材质",
       "Composition":"构图",
       "Randomize All": "随机化全部",
-      "Generate Image": "生成图像"
+      "Generate Image": "生成图像",
+      "Basic":"基础款"
     }
   }
 };

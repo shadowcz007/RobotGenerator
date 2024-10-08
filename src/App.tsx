@@ -26,11 +26,13 @@ function App() {
     let d = generateRandomRobot()
     try {
       let json: any = localStorage.getItem('_robot')
-      d = JSON.parse(json)
+      if(json){
+        d = JSON.parse(json)
+      }
     } catch (error) {
       console.log(error)
     }
-
+    console.log('robot', d)
     setRobot(d)
     setPrompt(describeImage(d))
 
@@ -178,7 +180,7 @@ function App() {
             <div className="bg-card shadow-md rounded-lg p-6  flex flex-col justify-between items-center">
               <div className="w-full flex flex-col justify-center items-start">
                 <p>Prompt:</p>
-                <p className="text-muted-foreground text-center">{prompt}</p>
+                <p className="text-muted-foreground text-left">{prompt}</p>
                 <br />
               </div>
 

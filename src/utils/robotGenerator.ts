@@ -87,6 +87,28 @@ function getRandomElement<T> (array: T[]): T {
   return array[Math.floor(Math.random() * array.length)]
 }
 
+export function getBasic(){
+  return {
+    "head": {
+      "color": "白色",
+      "shape": "导角方块",
+      "details": {
+        "screen": "显示字母'MIXLAB'",
+        "buttons_and_knobs": "发光的按键"
+      }
+    },
+    "body": {
+      "clothing": "纯白色印着MIXLAB的毛衣",
+      "accessories": "手腕上的全息投影仪"
+    },
+    "overall_style": {
+      "color_tone": "柔和、低调的色调",
+      "material": "类似旧电子设备的纹理",
+      "composition": "显示整个身体的全身构图"
+    }
+  }
+}
+
 export function generateRandomRobot (): Robot {
   return {
     head: {
@@ -112,9 +134,9 @@ export function generateRandomRobot (): Robot {
 export function describeImage (imageData: any) {
   const { head, body, overall_style } = imageData
 
-  const headDescription = `头部颜色为${head.color}，形状为${head.shape}，细节包括${head.details.screen}屏幕和侧面的${head.details.buttons_and_knobs}。`
+  const headDescription = `头部颜色为${head.color}，形状为${head.shape}，细节包括${head.details.screen}屏幕和${head.details.buttons_and_knobs}。`
   const bodyDescription = `身体穿着${body.clothing}，戴有${body.accessories}。`
-  const overallStyleDescription = `整体风格采用${overall_style.color_tone}色调，材质为${overall_style.material}，构图为${overall_style.composition}。`
+  const overallStyleDescription = `整体构图为${overall_style.composition}，风格采用${overall_style.color_tone}色调，材质为${overall_style.material}。`
 
   return `${overallStyleDescription} ${headDescription} ${bodyDescription} `
 }

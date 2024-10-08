@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Robot, generateRandomRobot } from '../utils/robotGenerator';
+import { Robot, generateRandomRobot, getBasic } from '../utils/robotGenerator';
 import { Shuffle } from 'lucide-react';
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -203,6 +203,14 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit }) => {
           className="flex items-center"
         >
           <Shuffle className="mr-2 h-4 w-4" /> {t('Randomize All')}
+        </Button>
+        <Button
+          type="button"
+          onClick={() => {
+            setFormData(getBasic());
+          }}
+        >
+          {t('Basic')}
         </Button>
         <Button type="submit">
           {t('Generate Image')}
