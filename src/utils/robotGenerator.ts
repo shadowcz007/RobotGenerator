@@ -69,7 +69,8 @@ const legStyles = [
   '带有液压装置的粗壮腿部',
   '履带式腿部',
   '仿生腿',
-  '带有喷气推进器的腿'
+  '带有喷气推进器的腿',
+  '黑色的高腰裤'
 ]
 
 const shoeTypes = [
@@ -77,7 +78,8 @@ const shoeTypes = [
   '金属靴子',
   '带有磁力吸盘的鞋子',
   '高科技跑鞋',
-  '复古皮鞋'
+  '复古皮鞋',
+  '黑色的金属靴子'
 ]
 
 const colorTones = [
@@ -122,13 +124,13 @@ export function getBasic () {
       accessories: '手腕上的全息投影仪'
     },
     legs: {
-      style: '细长的金属腿',
-      shoes: '带有轮子的运动鞋'
+      style: '黑色的高腰裤',
+      shoes: '黑色的金属靴子'
     },
     overall_style: {
       color_tone: '柔和、低调的色调',
       material: '类似旧电子设备的纹理',
-      composition: '显示整个身体的全身构图'
+      composition: '全身构图'
     }
   }
 }
@@ -164,10 +166,8 @@ export function describeImage (imageData: any) {
 
   const headDescription = `头部颜色为${head.color}，形状为${head.shape}，细节包括${head.details.screen}屏幕和${head.details.buttons_and_knobs}。`
   const bodyDescription = `身体穿着${body.clothing}，戴有${body.accessories}。`
-  const legDescription = legs
-    ? `腿部为${legs.style}，穿着${legs.shoes}。`
-    : ''
-  const overallStyleDescription = `整体构图为${overall_style.composition}，风格采用${overall_style.color_tone}色调，材质为${overall_style.material}。`
+  const legDescription = legs ? `腿部为${legs.style}，穿着${legs.shoes}。` : ''
+  const overallStyleDescription = `一张树脂做的Q版人物写实的照片，${overall_style.composition}，风格采用${overall_style.color_tone}色调，材质为${overall_style.material}。`
 
   return `${overallStyleDescription} ${headDescription} ${bodyDescription} ${legDescription}`
 }
