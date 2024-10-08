@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Robot, generateRandomRobot } from './utils/robotGenerator';
+import { Robot, generateRandomRobot, describeImage } from './utils/robotGenerator';
 import RobotForm from './components/RobotForm';
 import { Cpu } from 'lucide-react';
 import { Input } from "@/components/ui/input"
@@ -65,7 +65,7 @@ function App() {
       return JSON.stringify(d)
     }
 
-    data = JSON.stringify(data);
+    data = describeImage(data);
     if (containsChinese(data)) {
       const body = llmData(
         `Translate '''${data}''' into English, and do not output any other irrelevant information,ensuring the sentence has a coherent and logical structure.`,

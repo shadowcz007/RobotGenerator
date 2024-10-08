@@ -108,3 +108,13 @@ export function generateRandomRobot (): Robot {
     }
   }
 }
+
+export function describeImage (imageData: any) {
+  const { head, body, overall_style } = imageData
+
+  const headDescription = `头部颜色为${head.color}，形状为${head.shape}，细节包括${head.details.screen}屏幕和侧面的${head.details.buttons_and_knobs}。`
+  const bodyDescription = `身体穿着${body.clothing}，戴有${body.accessories}。`
+  const overallStyleDescription = `整体风格采用${overall_style.color_tone}色调，材质为${overall_style.material}，构图为${overall_style.composition}。`
+
+  return `${overallStyleDescription} ${headDescription} ${bodyDescription} `
+}
