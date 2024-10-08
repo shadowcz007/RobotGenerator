@@ -13,6 +13,7 @@ const resources = {
       "Screen": "Screen",
       "Buttons and Knobs": "Buttons and Knobs",
       "Body": "Body",
+      "Legs": "Legs",
       "Clothing": "Clothing",
       "Accessories": "Accessories",
       "Overall Style": "Overall Style",
@@ -20,8 +21,8 @@ const resources = {
       "Material": "Material",
       "Randomize All": "Randomize All",
       "Generate Image": "Generate Image",
-      "Composition":"Composition",
-      "Basic":"Basic"
+      "Composition": "Composition",
+      "Basic": "Basic"
     }
   },
   zh: {
@@ -33,15 +34,16 @@ const resources = {
       "Screen": "屏幕",
       "Buttons and Knobs": "按钮和旋钮",
       "Body": "身体",
+      "Legs": "下半身",
       "Clothing": "衣服",
       "Accessories": "配件",
       "Overall Style": "整体风格",
       "Color Tone": "色调",
       "Material": "材质",
-      "Composition":"构图",
+      "Composition": "构图",
       "Randomize All": "随机化全部",
       "Generate Image": "生成图像",
-      "Basic":"基础款"
+      "Basic": "基础款"
     }
   }
 };

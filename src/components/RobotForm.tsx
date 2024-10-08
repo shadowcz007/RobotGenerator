@@ -159,6 +159,29 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit }) => {
         </div>
       </div>
 
+
+      <div>
+        <h2 className="text-xl font-semibold mb-2">{t('Legs')}</h2>
+        <div className="space-y-2">
+          <Label htmlFor="legs-style">{t('Style')}</Label>
+          <InputWithRandom
+            category="legs"
+            field="style"
+            value={formData.legs.style}
+            onChange={(e) => handleChange(e, 'legs', 'style')}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="legs-shoes">{t('Shoes')}</Label>
+          <InputWithRandom
+            category="legs"
+            field="shoes"
+            value={formData.legs.shoes}
+            onChange={(e) => handleChange(e, 'legs', 'shoes')}
+          />
+        </div>
+      </div>
+
       <div>
         <h2 className="text-xl font-semibold mb-2">{t('Overall Style')}</h2>
         <div className="space-y-2">

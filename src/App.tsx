@@ -6,14 +6,15 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import DefaultImage from '@/components/DefaultImage';
 
+import { Loading } from "@/components/ui/loading"
 
 function App() {
   const [robot, setRobot] = useState<Robot | null>(null);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [apiKey, setApiKey] = useState(localStorage.getItem("_apiKey") || "");
-
   const [prompt, setPrompt] = useState(localStorage.getItem("_prompt") || "");
 
+  const [init, setInit] = useState(true);
   // Function to retrieve saved image from local storage on component mount
   useEffect(() => {
     if (robot) {
@@ -26,13 +27,16 @@ function App() {
     let d = generateRandomRobot()
     try {
       let json: any = localStorage.getItem('_robot')
-      if(json){
+      if (json) {
         d = JSON.parse(json)
       }
     } catch (error) {
       console.log(error)
     }
     console.log('robot', d)
+    if (!d.legs) {
+      d = generateRandomRobot()
+    }
     setRobot(d)
     setPrompt(describeImage(d))
 
@@ -91,7 +95,11 @@ function App() {
       return JSON.stringify(d)
     }
 
-    setRobot(data)
+    setRobot(data);
+
+    setInit(false);
+
+    setGeneratedImage("")
 
     data = describeImage(data);
 
@@ -185,17 +193,20 @@ function App() {
               </div>
 
               <div className="w-full flex flex-col justify-center items-start">
-                {generatedImage ? (
-                  <>
-                    <h2 className="text-2xl font-semibold mb-4">Generated Robot:</h2>
-                    <img src={generatedImage} alt="Generated Robot" className="rounded-lg shadow-md max-w-full h-auto" />
-                  </>
-                ) : (
-                  <>
-                    <p className="text-muted-foreground text-center">Your generated robot will appear here</p>
-                    <br />
-                    <DefaultImage />
-                  </>
+
+                {init ? <>
+                  <p className="text-muted-foreground text-center">Your generated robot will appear here</p>
+                  <br />
+                  <DefaultImage />
+                </> : (
+                  generatedImage ? (
+                    <>
+                      <h2 className="text-2xl font-semibold mb-4">Generated Robot:</h2>
+                      <img src={generatedImage} alt="Generated Robot" className="rounded-lg shadow-md max-w-full h-auto" />
+                    </>
+                  ) : (
+                    <Loading />
+                  )
                 )}
                 <br />
               </div>

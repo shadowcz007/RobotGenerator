@@ -11,6 +11,10 @@ export interface Robot {
     clothing: string
     accessories: string
   }
+  legs: {
+    style: string
+    shoes: string
+  }
   overall_style: {
     color_tone: string
     material: string
@@ -60,6 +64,22 @@ const accessoryTypes = [
   '手腕上的全息投影仪'
 ]
 
+const legStyles = [
+  '细长的金属腿',
+  '带有液压装置的粗壮腿部',
+  '履带式腿部',
+  '仿生腿',
+  '带有喷气推进器的腿'
+]
+
+const shoeTypes = [
+  '带有轮子的运动鞋',
+  '金属靴子',
+  '带有磁力吸盘的鞋子',
+  '高科技跑鞋',
+  '复古皮鞋'
+]
+
 const colorTones = [
   '柔和、低调的色调',
   '鲜艳的霓虹色',
@@ -77,8 +97,8 @@ const materials = [
 ]
 
 const compositions = [
-  '显示整个身体的全身构图',
-  '显示从头部到腰部的上半身构图',
+  '全身构图',
+  '从头部到腰部的上半身构图',
   '从上方俯视拍摄的自拍构图',
   '适合社交媒体头像的正面构图'
 ]
@@ -87,24 +107,28 @@ function getRandomElement<T> (array: T[]): T {
   return array[Math.floor(Math.random() * array.length)]
 }
 
-export function getBasic(){
+export function getBasic () {
   return {
-    "head": {
-      "color": "白色",
-      "shape": "导角方块",
-      "details": {
-        "screen": "显示字母'MIXLAB'",
-        "buttons_and_knobs": "发光的按键"
+    head: {
+      color: '白色',
+      shape: '导角方块',
+      details: {
+        screen: "显示字母'MIXLAB'",
+        buttons_and_knobs: '发光的按键'
       }
     },
-    "body": {
-      "clothing": "纯白色印着MIXLAB的毛衣",
-      "accessories": "手腕上的全息投影仪"
+    body: {
+      clothing: '纯白色印着MIXLAB的毛衣',
+      accessories: '手腕上的全息投影仪'
     },
-    "overall_style": {
-      "color_tone": "柔和、低调的色调",
-      "material": "类似旧电子设备的纹理",
-      "composition": "显示整个身体的全身构图"
+    legs: {
+      style: '细长的金属腿',
+      shoes: '带有轮子的运动鞋'
+    },
+    overall_style: {
+      color_tone: '柔和、低调的色调',
+      material: '类似旧电子设备的纹理',
+      composition: '显示整个身体的全身构图'
     }
   }
 }
@@ -123,20 +147,27 @@ export function generateRandomRobot (): Robot {
       clothing: getRandomElement(clothingStyles),
       accessories: getRandomElement(accessoryTypes)
     },
+    legs: {
+      style: getRandomElement(legStyles),
+      shoes: getRandomElement(shoeTypes)
+    },
     overall_style: {
       color_tone: getRandomElement(colorTones),
       material: getRandomElement(materials),
-      composition: getRandomElement(compositions) // 使用新添加的属性
+      composition: getRandomElement(compositions)
     }
   }
 }
 
 export function describeImage (imageData: any) {
-  const { head, body, overall_style } = imageData
+  const { head, body, legs, overall_style } = imageData
 
   const headDescription = `头部颜色为${head.color}，形状为${head.shape}，细节包括${head.details.screen}屏幕和${head.details.buttons_and_knobs}。`
   const bodyDescription = `身体穿着${body.clothing}，戴有${body.accessories}。`
+  const legDescription = legs
+    ? `腿部为${legs.style}，鞋子为${legs.shoes}。`
+    : ''
   const overallStyleDescription = `整体构图为${overall_style.composition}，风格采用${overall_style.color_tone}色调，材质为${overall_style.material}。`
 
-  return `${overallStyleDescription} ${headDescription} ${bodyDescription} `
+  return `${overallStyleDescription} ${headDescription} ${bodyDescription} ${legDescription}`
 }
