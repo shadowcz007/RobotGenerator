@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Robot, generateRandomRobot, describeImage } from './utils/robotGenerator';
 import RobotForm from './components/RobotForm';
 import { Cpu } from 'lucide-react';
@@ -8,11 +8,33 @@ import DefaultImage from '@/components/DefaultImage';
 
 
 function App() {
-  const [robot, _] = useState<Robot>(generateRandomRobot());
+  const [robot, setRobot] = useState<Robot | null>(null);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [apiKey, setApiKey] = useState(localStorage.getItem("_apiKey") || "");
 
   const [prompt, setPrompt] = useState(localStorage.getItem("_prompt") || "");
+
+  // Function to retrieve saved image from local storage on component mount
+  useEffect(() => {
+    if (robot) {
+      localStorage.setItem('_robot', JSON.stringify(robot))
+      setPrompt(describeImage(robot))
+    }
+  }, [robot]);
+
+  useEffect(() => {
+    let d = generateRandomRobot()
+    try {
+      let json: any = localStorage.getItem('_robot')
+      d = JSON.parse(json)
+    } catch (error) {
+      console.log(error)
+    }
+
+    setRobot(d)
+    setPrompt(describeImage(d))
+
+  }, []);
 
   const handleSubmit = async (data: any) => {
     // TODO: Replace with actual API call
@@ -67,9 +89,9 @@ function App() {
       return JSON.stringify(d)
     }
 
-    data = describeImage(data);
+    setRobot(data)
 
-    setPrompt(data);
+    data = describeImage(data);
 
     if (containsChinese(data)) {
       const body = llmData(
@@ -114,10 +136,11 @@ function App() {
       console.error(err);
     }
 
-
-
     // setGeneratedImage('https://source.unsplash.com/random/400x400?robot');
   };
+
+  console.log('robot', robot)
+  if (!robot) return <>loading</>
 
   return (
     <div className="min-h-screen bg-background text-foreground p-4">
@@ -145,10 +168,10 @@ function App() {
                 />
               </div>
 
-              <RobotForm
+              {robot && <RobotForm
                 initialData={robot}
                 onSubmit={handleSubmit}
-              />
+              />}
             </div>
           </div>
           <div className="w-full lg:w-1/2">
