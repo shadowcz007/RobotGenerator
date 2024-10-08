@@ -1,21 +1,23 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Robot, generateRandomRobot, describeImage } from './utils/robotGenerator';
 import RobotForm from './components/RobotForm';
 import { Cpu } from 'lucide-react';
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import DefaultImage from '@/components/DefaultImage';
-
 import { Loading } from "@/components/ui/loading"
+import './i18n'; // 引入 i18n 配置
 
 function App() {
+  const { t, i18n } = useTranslation();
   const [robot, setRobot] = useState<Robot | null>(null);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [apiKey, setApiKey] = useState(localStorage.getItem("_apiKey") || "");
   const [prompt, setPrompt] = useState(localStorage.getItem("_prompt") || "");
 
   const [init, setInit] = useState(true);
-  // Function to retrieve saved image from local storage on component mount
+
   useEffect(() => {
     if (robot) {
       localStorage.setItem('_robot', JSON.stringify(robot))
@@ -149,15 +151,25 @@ function App() {
     // setGeneratedImage('https://source.unsplash.com/random/400x400?robot');
   };
 
+  const toggleLanguage = () => {
+    const newLanguage = i18n.language === "en" ? "zh" : "en";
+    i18n.changeLanguage(newLanguage);
+    localStorage.setItem("_language", newLanguage);
+  };
+
   console.log('robot', robot)
   if (!robot) return <>loading</>
 
   return (
     <div className="min-h-screen bg-background text-foreground p-4">
-      <h1 className="text-3xl font-bold mb-6 flex items-center justify-center">
-        <Cpu className="mr-2" /> Robot Generator
-      </h1>
-
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold mb-6 flex items-center justify-center">
+          <Cpu className="mr-2" /> {t('Robot Generator')}
+        </h1>
+        <button onClick={toggleLanguage} className="bg-card shadow-md rounded-lg p-2">
+          {t(i18n.language === 'en' ? 'Switch to Chinese' : 'Switch to English')}
+        </button>
+      </div>
 
       <div className="container mx-auto">
         <div className="flex flex-col lg:flex-row gap-8">
@@ -165,12 +177,11 @@ function App() {
             <div className="bg-card shadow-md rounded-lg p-6">
 
               <div className="space-y-2">
-                <Label htmlFor="head-shape">Siliconflow API密钥</Label>
+                <Label htmlFor="head-shape">{t('Siliconflow API Key')}</Label>
                 <Input
                   type="password"
                   value={apiKey}
                   onChange={(e) => {
-                    // console.log(e.target.value)
                     setApiKey(e.target.value)
                     localStorage.setItem("_apiKey", e.target.value)
                   }}
@@ -187,7 +198,7 @@ function App() {
           <div className="w-full lg:w-1/2">
             <div className="bg-card shadow-md rounded-lg p-6  flex flex-col justify-between items-center">
               <div className="w-full flex flex-col justify-center items-start">
-                <p>Prompt:</p>
+                <p>{t('Prompt:')}</p>
                 <p className="text-muted-foreground text-left">{prompt}</p>
                 <br />
               </div>
@@ -195,13 +206,13 @@ function App() {
               <div className="w-full flex flex-col justify-center items-start">
 
                 {init ? <>
-                  <p className="text-muted-foreground text-center">Your generated robot will appear here</p>
+                  <p className="text-muted-foreground text-center">{t('Your generated robot will appear here')}</p>
                   <br />
                   <DefaultImage />
                 </> : (
                   generatedImage ? (
                     <>
-                      <h2 className="text-2xl font-semibold mb-4">Generated Robot:</h2>
+                      <h2 className="text-2xl font-semibold mb-4">{t('Generated Robot:')}</h2>
                       <img src={generatedImage} alt="Generated Robot" className="rounded-lg shadow-md max-w-full h-auto" />
                     </>
                   ) : (

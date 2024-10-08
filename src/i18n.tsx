@@ -6,6 +6,14 @@ import { initReactI18next } from 'react-i18next';
 const resources = {
   en: {
     translation: {
+      "Siliconflow API Key": "Siliconflow API Key",
+      "Submit": "Submit",
+      "Prompt:": "Prompt:",
+      "Generated Robot:": "Generated Robot:",
+      "Your generated robot will appear here": "Your generated robot will appear here",
+      "Switch to Chinese": "Switch to Chinese",
+      "Switch to English": "Switch to English",
+      // 其他翻译键值对
       "Head": "Head",
       "Color": "Color",
       "Shape": "Shape",
@@ -27,6 +35,14 @@ const resources = {
   },
   zh: {
     translation: {
+      "Siliconflow API Key": "Siliconflow API密钥",
+      "Submit": "提交",
+      "Prompt:": "提示词:",
+      "Generated Robot:": "生成的机器人:",
+      "Your generated robot will appear here": "生成的机器人会显示在这里",
+      "Switch to Chinese": "切换到中文",
+      "Switch to English": "切换到英文",
+      // 其他翻译键值对
       "Head": "头部",
       "Color": "颜色",
       "Shape": "形状",
