@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label"
 
 interface RobotFormProps {
   initialData: Robot;
-  onSubmit: (data: Robot) => void; 
+  onSubmit: (data: Robot) => void;
 }
 
 const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit }) => {
@@ -179,6 +179,17 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit }) => {
             onChange={(e) => handleChange(e, 'overall_style', 'material')}
           />
         </div>
+        <div className="space-y-2">
+          <Label htmlFor="overall_style-composition">{t('Composition')}</Label>
+          <InputWithRandom
+            category="overall_style"
+            field="composition"
+            value={formData.overall_style.composition}
+            onChange={(e) => handleChange(e, 'overall_style', 'composition')}
+          />
+        </div>
+
+
       </div>
 
       <div className="flex space-x-4">

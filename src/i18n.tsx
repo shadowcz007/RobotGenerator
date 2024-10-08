@@ -19,7 +19,8 @@ const resources = {
       "Color Tone": "Color Tone",
       "Material": "Material",
       "Randomize All": "Randomize All",
-      "Generate Image": "Generate Image"
+      "Generate Image": "Generate Image",
+      "Composition":"Composition"
     }
   },
   zh: {
@@ -36,6 +37,7 @@ const resources = {
       "Overall Style": "整体风格",
       "Color Tone": "色调",
       "Material": "材质",
+      "Composition":"构图",
       "Randomize All": "随机化全部",
       "Generate Image": "生成图像"
     }
