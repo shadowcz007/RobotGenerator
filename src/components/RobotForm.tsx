@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Robot, generateRandomRobot } from '../utils/robotGenerator';
 import { Shuffle } from 'lucide-react';
 import { Button } from "@/components/ui/button"
@@ -11,6 +12,7 @@ interface RobotFormProps {
 }
 
 const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit }) => {
+  const { t } = useTranslation();
   const [formData, setFormData] = React.useState<Robot>(initialData);
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>, category: keyof Robot, subCategory?: string, field?: string) => {
@@ -34,16 +36,13 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit }) => {
       const newState = { ...prev };
 
       if (subCategory && field) {
-        // 三级嵌套的情况
         if (!newState[category]) newState[category] = {};
         if (!newState[category][subCategory]) newState[category][subCategory] = {};
         newState[category][subCategory][field] = newRobot[category][subCategory][field];
       } else if (subCategory) {
-        // 二级嵌套的情况
         if (!newState[category]) newState[category] = {};
         newState[category][subCategory] = newRobot[category][subCategory];
       } else {
-        // 二级嵌套的情况，只更新 field 的值
         if (!newState[category]) newState[category] = {};
         for (const key in newRobot[category]) {
           if (newRobot[category].hasOwnProperty(key)) {
@@ -96,9 +95,9 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit }) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold mb-2">Head</h2>
+        <h2 className="text-xl font-semibold mb-2">{t('Head')}</h2>
         <div className="space-y-2">
-          <Label htmlFor="head-color">Color</Label>
+          <Label htmlFor="head-color">{t('Color')}</Label>
           <InputWithRandom
             category="head"
             field="color"
@@ -107,7 +106,7 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit }) => {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="head-shape">Shape</Label>
+          <Label htmlFor="head-shape">{t('Shape')}</Label>
           <InputWithRandom
             category="head"
             field="shape"
@@ -115,9 +114,9 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit }) => {
             onChange={(e) => handleChange(e, 'head', 'shape')}
           />
         </div>
-        <h3 className="text-lg font-semibold mt-3">Details</h3>
+        <h3 className="text-lg font-semibold mt-3">{t('Details')}</h3>
         <div className="space-y-2">
-          <Label htmlFor="head-details-screen">Screen</Label>
+          <Label htmlFor="head-details-screen">{t('Screen')}</Label>
           <InputWithRandom
             category="head"
             subCategory="details"
@@ -127,7 +126,7 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit }) => {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="head-details-buttons_and_knobs">Buttons and Knobs</Label>
+          <Label htmlFor="head-details-buttons_and_knobs">{t('Buttons and Knobs')}</Label>
           <InputWithRandom
             category="head"
             subCategory="details"
@@ -139,9 +138,9 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit }) => {
       </div>
 
       <div>
-        <h2 className="text-xl font-semibold mb-2">Body</h2>
+        <h2 className="text-xl font-semibold mb-2">{t('Body')}</h2>
         <div className="space-y-2">
-          <Label htmlFor="body-clothing">Clothing</Label>
+          <Label htmlFor="body-clothing">{t('Clothing')}</Label>
           <InputWithRandom
             category="body"
             field="clothing"
@@ -150,7 +149,7 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit }) => {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="body-accessories">Accessories</Label>
+          <Label htmlFor="body-accessories">{t('Accessories')}</Label>
           <InputWithRandom
             category="body"
             field="accessories"
@@ -161,9 +160,9 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit }) => {
       </div>
 
       <div>
-        <h2 className="text-xl font-semibold mb-2">Overall Style</h2>
+        <h2 className="text-xl font-semibold mb-2">{t('Overall Style')}</h2>
         <div className="space-y-2">
-          <Label htmlFor="overall_style-color_tone">Color Tone</Label>
+          <Label htmlFor="overall_style-color_tone">{t('Color Tone')}</Label>
           <InputWithRandom
             category="overall_style"
             field="color_tone"
@@ -172,7 +171,7 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit }) => {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="overall_style-material">Material</Label>
+          <Label htmlFor="overall_style-material">{t('Material')}</Label>
           <InputWithRandom
             category="overall_style"
             field="material"
@@ -192,10 +191,10 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit }) => {
           variant="outline"
           className="flex items-center"
         >
-          <Shuffle className="mr-2 h-4 w-4" /> Randomize All
+          <Shuffle className="mr-2 h-4 w-4" /> {t('Randomize All')}
         </Button>
         <Button type="submit">
-          Generate Image
+          {t('Generate Image')}
         </Button>
       </div>
     </form >
