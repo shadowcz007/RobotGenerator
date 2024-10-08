@@ -165,7 +165,7 @@ export function describeImage (imageData: any) {
   const headDescription = `头部颜色为${head.color}，形状为${head.shape}，细节包括${head.details.screen}屏幕和${head.details.buttons_and_knobs}。`
   const bodyDescription = `身体穿着${body.clothing}，戴有${body.accessories}。`
   const legDescription = legs
-    ? `腿部为${legs.style}，鞋子为${legs.shoes}。`
+    ? `腿部为${legs.style}，穿着${legs.shoes}。`
     : ''
   const overallStyleDescription = `整体构图为${overall_style.composition}，风格采用${overall_style.color_tone}色调，材质为${overall_style.material}。`
 
