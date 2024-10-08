@@ -91,7 +91,7 @@ function App() {
       headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         "model": "black-forest-labs/FLUX.1-schnell",
-        "prompt": data,
+        "prompt": `A human with a head resembling a vintage computer.`+data,
         "image_size": "1024x1024"
       })
     };
