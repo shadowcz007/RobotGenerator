@@ -4,6 +4,8 @@ import RobotForm from './components/RobotForm';
 import { Cpu } from 'lucide-react';
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import DefaultImage from '@/components/DefaultImage';
+
 
 function App() {
   const [robot, _] = useState<Robot>(generateRandomRobot());
@@ -91,7 +93,7 @@ function App() {
       headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         "model": "black-forest-labs/FLUX.1-schnell",
-        "prompt": `A human with a head resembling a vintage computer.`+data,
+        "prompt": `A human with a head resembling a vintage computer.` + data,
         "image_size": "1024x1024"
       })
     };
@@ -152,7 +154,9 @@ function App() {
                   <img src={generatedImage} alt="Generated Robot" className="rounded-lg shadow-md max-w-full h-auto" />
                 </>
               ) : (
-                <p className="text-muted-foreground text-center">Your generated robot will appear here</p>
+                <><p className="text-muted-foreground text-center">Your generated robot will appear here</p>
+                  <DefaultImage />
+                </>
               )}
             </div>
           </div>
