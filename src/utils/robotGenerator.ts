@@ -16,70 +16,71 @@ export interface Robot {
     material: string;
   };
 }
-
 const headColors = [
-  "white with a subtle yellow tint",
-  "metallic silver",
-  "matte black",
-  "glossy white",
-  "brushed aluminum",
+  "带有淡黄色调的白色",
+  "金属银",
+  "哑光黑",
+  "光泽白",
+  "拉丝铝",
 ];
 
 const headShapes = [
-  "square with rounded corners",
-  "oval",
-  "cylindrical",
-  "hexagonal",
-  "dome-shaped",
+  "圆角方形",
+  "椭圆形",
+  "圆柱形",
+  "六边形",
+  "圆顶形",
 ];
 
 const screenTypes = [
-  "CRT displaying pixelated expressions",
-  "LED matrix showing simple patterns",
-  "OLED screen with high-resolution graphics",
-  "E-ink display with changeable text",
-  "Holographic projection",
+  "显示像素化表情的CRT",
+  "显示简单图案的LED矩阵",
+  "高分辨率图形的OLED屏幕",
+  "可变文本的电子墨水显示屏",
+  "全息投影",
 ];
 
 const buttonTypes = [
-  "physical buttons and knobs scattered around the head",
-  "touch-sensitive panels on the sides",
-  "retro-style toggle switches",
-  "illuminated push buttons",
-  "rotary dials and sliders",
+  "散布在头部周围的物理按钮和旋钮",
+  "侧面的触敏面板",
+  "复古风格的拨动开关",
+  "发光的按键",
+  "旋转拨盘和滑块",
 ];
 
 const clothingStyles = [
-  "mid-20th century fashion with high-waisted pants and a slim tie",
-  "futuristic jumpsuit with glowing accents",
-  "steampunk-inspired vest and trousers",
-  "minimalist tunic with geometric patterns",
-  "retro space suit with bulky joints",
+  "20世纪中期时尚，高腰裤和细领带",
+  "带有发光装饰的未来派连身衣",
+  "蒸汽朋克风格的背心和长裤",
+  "带有几何图案的极简主义长袍",
+  "复古太空服，带有笨重的关节",
 ];
 
 const accessoryTypes = [
-  "magnetic tapes and floppy disks attached to a belt",
-  "glowing power cores on the chest",
-  "retractable antennae on the shoulders",
-  "utility pockets filled with gadgets",
-  "holographic projectors on the wrists",
+  "腰带上附有磁带和软盘",
+  "胸前的发光能量核心",
+  "肩部的可伸缩天线",
+  "装满小工具的多功能口袋",
+  "手腕上的全息投影仪",
 ];
 
 const colorTones = [
-  "soft, muted tones",
-  "vibrant neon colors",
-  "earthy, natural hues",
-  "monochromatic grayscale",
-  "pastel shades",
+  "柔和、低调的色调",
+  "鲜艳的霓虹色",
+  "朴实、自然的色调",
+  "单色灰度",
+  "粉彩色调",
 ];
 
 const materials = [
-  "textures resembling old electronic devices",
-  "smooth, polished surfaces",
-  "weathered and worn metal",
-  "translucent plastics with inner glow",
-  "fabric-like textures with circuitry patterns",
+  "类似旧电子设备的纹理",
+  "光滑、抛光的表面",
+  "风化和磨损的金属",
+  "内部发光的半透明塑料",
+  "带有电路图案的织物纹理",
 ];
+
+
 
 function getRandomElement<T>(array: T[]): T {
   return array[Math.floor(Math.random() * array.length)];
