@@ -12,6 +12,8 @@ function App() {
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [apiKey, setApiKey] = useState(localStorage.getItem("_apiKey") || "");
 
+  const [prompt, setPrompt] = useState(localStorage.getItem("_prompt") || "");
+
   const handleSubmit = async (data: any) => {
     // TODO: Replace with actual API call
     console.log('Submitting data:', data);
@@ -66,6 +68,9 @@ function App() {
     }
 
     data = describeImage(data);
+
+    setPrompt(data);
+
     if (containsChinese(data)) {
       const body = llmData(
         `Translate '''${data}''' into English, and do not output any other irrelevant information,ensuring the sentence has a coherent and logical structure.`,
@@ -147,18 +152,30 @@ function App() {
             </div>
           </div>
           <div className="w-full lg:w-1/2">
-            <div className="bg-card shadow-md rounded-lg p-6 h-full flex flex-col justify-center items-center">
-              {generatedImage ? (
-                <>
-                  <h2 className="text-2xl font-semibold mb-4">Generated Robot:</h2>
-                  <img src={generatedImage} alt="Generated Robot" className="rounded-lg shadow-md max-w-full h-auto" />
-                </>
-              ) : (
-                <><p className="text-muted-foreground text-center">Your generated robot will appear here</p>
-                  <DefaultImage />
-                </>
-              )}
+            <div className="bg-card shadow-md rounded-lg p-6  flex flex-col justify-between items-center">
+              <div className="w-full flex flex-col justify-center items-start">
+                <p>Prompt:</p>
+                <p className="text-muted-foreground text-center">{prompt}</p>
+                <br />
+              </div>
+
+              <div className="w-full flex flex-col justify-center items-start">
+                {generatedImage ? (
+                  <>
+                    <h2 className="text-2xl font-semibold mb-4">Generated Robot:</h2>
+                    <img src={generatedImage} alt="Generated Robot" className="rounded-lg shadow-md max-w-full h-auto" />
+                  </>
+                ) : (
+                  <>
+                    <p className="text-muted-foreground text-center">Your generated robot will appear here</p>
+                    <br />
+                    <DefaultImage />
+                  </>
+                )}
+                <br />
+              </div>
             </div>
+
           </div>
         </div>
       </div>
