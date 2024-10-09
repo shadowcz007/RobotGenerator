@@ -1,11 +1,11 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Robot, generateRandomRobot, getBasic, getBasicKeywords, Keywords } from '../utils/robotGenerator';
 import { Shuffle } from 'lucide-react';
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-
+import InputWithRandom from "@/components/ui/inputWithRandom";
 
 interface RobotFormProps {
   initialData: Robot;
@@ -18,8 +18,6 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, callback }
   const [formData, setFormData] = React.useState<Robot>(initialData);
   //更多的种子词
   const moreKeywords = new Keywords()
-
-
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>, category: keyof Robot, subCategory?: string, field?: string) => {
     const { value } = e.target;
@@ -72,38 +70,6 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, callback }
     onSubmit(formData);
   };
 
-  const InputWithRandom = useMemo(() => ({
-    category,
-    subCategory,
-    field,
-    value,
-    onChange
-  }: {
-    category: keyof Robot,
-    subCategory?: string,
-    field: string,
-    value: string,
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  }) => (
-    <div className="flex items-center space-x-2 mt-2">
-      <Input
-        type="text"
-        id={`${category}-${subCategory ? subCategory + '-' : ''}${field}`}
-        value={value}
-        onChange={onChange}
-        className="flex-grow"
-      />
-      <Button
-        type="button"
-        onClick={() => handleRandomField(category, subCategory, field)}
-        variant="outline"
-        size="icon"
-      >
-        <Shuffle className="h-4 w-4" />
-      </Button>
-    </div>
-  ), [handleRandomField]);
-
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
@@ -115,6 +81,7 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, callback }
             field="color"
             value={formData.head.color}
             onChange={(e) => handleChange(e, 'head', 'color')}
+            handleRandomField={handleRandomField}
           />
         </div>
         <div className="space-y-2">
@@ -124,6 +91,7 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, callback }
             field="shape"
             value={formData.head.shape}
             onChange={(e) => handleChange(e, 'head', 'shape')}
+            handleRandomField={handleRandomField}
           />
         </div>
         <h3 className="text-lg font-semibold mt-3">{t('Details')}</h3>
@@ -135,6 +103,7 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, callback }
             field="screen"
             value={formData.head.details.screen}
             onChange={(e) => handleChange(e, 'head', 'details', 'screen')}
+            handleRandomField={handleRandomField}
           />
         </div>
         <div className="space-y-2">
@@ -145,6 +114,7 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, callback }
             field="buttons_and_knobs"
             value={formData.head.details.buttons_and_knobs}
             onChange={(e) => handleChange(e, 'head', 'details', 'buttons_and_knobs')}
+            handleRandomField={handleRandomField}
           />
         </div>
       </div>
@@ -158,6 +128,7 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, callback }
             field="clothing"
             value={formData.body.clothing}
             onChange={(e) => handleChange(e, 'body', 'clothing')}
+            handleRandomField={handleRandomField}
           />
         </div>
         <div className="space-y-2">
@@ -167,6 +138,7 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, callback }
             field="accessories"
             value={formData.body.accessories}
             onChange={(e) => handleChange(e, 'body', 'accessories')}
+            handleRandomField={handleRandomField}
           />
         </div>
       </div>
@@ -181,6 +153,7 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, callback }
             field="style"
             value={formData.legs.style}
             onChange={(e) => handleChange(e, 'legs', 'style')}
+            handleRandomField={handleRandomField}
           />
         </div>
         <div className="space-y-2">
@@ -190,6 +163,7 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, callback }
             field="shoes"
             value={formData.legs.shoes}
             onChange={(e) => handleChange(e, 'legs', 'shoes')}
+            handleRandomField={handleRandomField}
           />
         </div>
       </div>
@@ -203,6 +177,7 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, callback }
             field="color_tone"
             value={formData.overall_style.color_tone}
             onChange={(e) => handleChange(e, 'overall_style', 'color_tone')}
+            handleRandomField={handleRandomField}
           />
         </div>
         <div className="space-y-2">
@@ -212,6 +187,7 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, callback }
             field="material"
             value={formData.overall_style.material}
             onChange={(e) => handleChange(e, 'overall_style', 'material')}
+            handleRandomField={handleRandomField}
           />
         </div>
         <div className="space-y-2">
@@ -221,6 +197,7 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, callback }
             field="composition"
             value={formData.overall_style.composition}
             onChange={(e) => handleChange(e, 'overall_style', 'composition')}
+            handleRandomField={handleRandomField}
           />
         </div>
 
@@ -256,4 +233,3 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, callback }
 };
 
 export default RobotForm;
-

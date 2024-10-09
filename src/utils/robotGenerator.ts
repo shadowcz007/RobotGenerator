@@ -120,7 +120,9 @@ export class Keywords {
     this.moreKeywords = {}
     try {
       let d: any = localStorage.getItem('_moreKeywords')
-      this.moreKeywords = JSON.parse(d)
+      if (d) {
+        this.moreKeywords = JSON.parse(d)
+      }
     } catch (error) {
       console.log(error)
     }
@@ -141,7 +143,8 @@ export class Keywords {
     localStorage.setItem('_moreKeywords', JSON.stringify(this.moreKeywords))
   }
   getKeywords (key: any) {
-    return this.moreKeywords[key]
+    console.log(this.moreKeywords)
+    return this.moreKeywords[key] || []
   }
 }
 
