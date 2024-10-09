@@ -7,13 +7,20 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import DefaultImage from '@/components/DefaultImage';
 import { Loading } from "@/components/ui/loading"
+import ImageGallery from '@/components/ui/ImageGallery';
+
 import './i18n'; // 引入 i18n 配置
 import { translateToEn, generateImage, moreSimilarText } from './utils/ai'
+
+function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 function App() {
   const { t, i18n } = useTranslation();
   const [robot, setRobot] = useState<Robot | null>(null);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
+  const [moreImages, setMoreImages] = useState<any>([]);
 
   const [prompt, setPrompt] = useState(localStorage.getItem("_prompt") || "");
 
@@ -66,6 +73,7 @@ function App() {
     setInit(false);
 
     setGeneratedImage("")
+    setMoreImages([])
 
     data = describeImage(data);
 
@@ -75,6 +83,15 @@ function App() {
 
     if (imgurl) {
       setGeneratedImage(imgurl)
+    }
+
+    if (generateMultiple) {
+      await sleep(1000)
+      for (let index = 0; index < 20; index++) {
+        let imgurl1 = await generateImage(`A human with a head resembling a vintage computer.` + data, apiKey)
+        setMoreImages([...moreImages, imgurl1])
+        await sleep(1200)
+      }
     }
 
     // setGeneratedImage('https://source.unsplash.com/random/400x400?robot');
@@ -150,6 +167,9 @@ function App() {
                   )
                 )}
                 <br />
+
+                {moreImages && moreImages.length > 0 && <ImageGallery images={moreImages} />}
+
               </div>
             </div>
 
