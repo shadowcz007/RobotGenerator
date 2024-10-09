@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Robot, generateRandomRobot, describeImage } from './utils/robotGenerator';
-import RobotForm from './components/RobotForm';
+import RobotForm from '@/components/RobotForm';
 import { Cpu } from 'lucide-react';
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -16,88 +16,97 @@ function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+function getLocalStorageItem(key: string, defaultValue: any = null) {
+  try {
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : defaultValue;
+  } catch (error) {
+    console.error(`Error parsing localStorage item "${key}":`, error);
+    return defaultValue;
+  }
+}
+
 function App() {
   const { t, i18n } = useTranslation();
   const [robot, setRobot] = useState<Robot | null>(null);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
-  const [moreImages, setMoreImages] = useState<any>([]);
-
-  const [prompt, setPrompt] = useState(localStorage.getItem("_prompt") || "");
-
-  const [init, setInit] = useState(true);
+  const [moreImages, setMoreImages] = useState<string[]>([]);
+  const [prompt, setPrompt] = useState<string>(localStorage.getItem("_prompt") || "");
+  const [init, setInit] = useState<boolean>(true);
 
   useEffect(() => {
     if (robot) {
-      localStorage.setItem('_robot', JSON.stringify(robot))
-      setPrompt(describeImage(robot))
+      localStorage.setItem('_robot', JSON.stringify(robot));
+      setPrompt(describeImage(robot));
     }
   }, [robot]);
 
   useEffect(() => {
-    let d = generateRandomRobot()
-    try {
-      let json: any = localStorage.getItem('_robot')
-      if (json) {
-        d = JSON.parse(json)
-      }
-    } catch (error) {
-      console.log(error)
+    if (generatedImage) {
+      localStorage.setItem('_generatedImage', generatedImage);
     }
-    // console.log('robot', d)
-    if (!d.legs) {
-      d = generateRandomRobot()
-    }
-    setRobot(d)
-    setPrompt(describeImage(d))
+  }, [generatedImage]);
 
+  useEffect(() => {
+    if (moreImages.length > 0) {
+      localStorage.setItem('_moreImages', JSON.stringify(moreImages));
+    }
+  }, [moreImages]);
+
+  useEffect(() => {
+    const cachedRobot = getLocalStorageItem('_robot', generateRandomRobot());
+    if (!cachedRobot.legs) {
+      setRobot(generateRandomRobot());
+    } else {
+      setRobot(cachedRobot);
+    }
+
+    setPrompt(describeImage(cachedRobot));
+
+    const cachedMoreImages = getLocalStorageItem('_moreImages', []);
+    setMoreImages(cachedMoreImages);
+
+    const cachedGeneratedImage = localStorage.getItem('_generatedImage');
+    if (cachedGeneratedImage) {
+      setGeneratedImage(cachedGeneratedImage);
+      setInit(false);
+    }
   }, []);
 
   const handleCallback = async (data: any) => {
-    const apiKey = localStorage.getItem("_apiKey") || ""
+    const apiKey = localStorage.getItem("_apiKey") || "";
     if (data && data.type === 'randomField' && apiKey) {
-      // console.log(apiKey)
-      return await moreSimilarText(data.data, apiKey)
+      return await moreSimilarText(data.data, apiKey);
     }
   }
 
   const handleSubmit = async (formData: any) => {
-    // TODO: Replace with actual API call
-    console.log('Submitting data:', formData);
-    let { data, generateMultiple } = formData
-
-    const apiKey = localStorage.getItem("_apiKey") || ""
-    // Simulating API response
+    const { data, generateMultiple } = formData;
+    const apiKey = localStorage.getItem("_apiKey") || "";
 
     setRobot(data);
-
     setInit(false);
+    setGeneratedImage("");
+    setMoreImages([]);
 
-    setGeneratedImage("")
-    setMoreImages([])
+    let description = describeImage(data);
+    description = await translateToEn(description, apiKey) || description;
 
-    data = describeImage(data);
-
-    data = await translateToEn(data, apiKey) || data;
-
-    let imgurl = await generateImage(`A human with a head resembling a vintage computer.` + data, apiKey)
-
+    const imgurl = await generateImage(`A human with a head resembling a vintage computer. ${description}`, apiKey);
     if (imgurl) {
-      setGeneratedImage(imgurl)
+      setGeneratedImage(imgurl);
     }
 
     if (generateMultiple) {
-      await sleep(1200)
+      await sleep(2200);
       for (let index = 0; index < 20; index++) {
-        let imgurl1 = await generateImage(`A human with a head resembling a vintage computer.` + data, apiKey)
-        if (imgurl1) {
-          setMoreImages([...moreImages, imgurl1]);
-          await sleep(3200)
+        const imgurl = await generateImage(`A human with a head resembling a vintage computer. ${description}`, apiKey);
+        if (imgurl) {
+          setMoreImages((prevImages) => [...prevImages, imgurl]);
+          await sleep(5200);
         }
-
       }
     }
-
-    // setGeneratedImage('https://source.unsplash.com/random/400x400?robot');
   };
 
   const toggleLanguage = () => {
@@ -106,8 +115,7 @@ function App() {
     localStorage.setItem("_language", newLanguage);
   };
 
-  console.log('robot', robot)
-  if (!robot) return <>loading</>
+  if (!robot) return <>loading</>;
 
   return (
     <div className="min-h-screen bg-background text-foreground p-4">
@@ -124,29 +132,21 @@ function App() {
         <div className="flex flex-col lg:flex-row gap-8">
           <div className="w-full lg:w-1/2">
             <div className="bg-card shadow-md rounded-lg p-6">
-
               <div className="space-y-2">
                 <Label htmlFor="head-shape">{t('Siliconflow API Key')}</Label>
                 <Input
                   type="password"
                   value={localStorage.getItem("_apiKey") || ""}
-                  onChange={(e) => {
-                    console.log("#set key", e.target.value)
-                    localStorage.setItem("_apiKey", e.target.value)
-                  }}
+                  onChange={(e) => localStorage.setItem("_apiKey", e.target.value)}
                   className="flex-grow"
                 />
               </div>
 
-              {robot && <RobotForm
-                initialData={robot}
-                onSubmit={handleSubmit}
-                callback={handleCallback}
-              />}
+              {robot && <RobotForm initialData={robot} onSubmit={handleSubmit} callback={handleCallback} />}
             </div>
           </div>
           <div className="w-full lg:w-1/2">
-            <div className="bg-card shadow-md rounded-lg p-6  flex flex-col justify-between items-center">
+            <div className="bg-card shadow-md rounded-lg p-6 flex flex-col justify-between items-center">
               <div className="w-full flex flex-col justify-center items-start">
                 <p>{t('Prompt:')}</p>
                 <p className="text-muted-foreground text-left">{prompt}</p>
@@ -154,12 +154,13 @@ function App() {
               </div>
 
               <div className="w-full flex flex-col justify-center items-start">
-
-                {init ? <>
-                  <p className="text-muted-foreground text-center">{t('Your generated robot will appear here')}</p>
-                  <br />
-                  <DefaultImage />
-                </> : (
+                {init ? (
+                  <>
+                    <p className="text-muted-foreground text-center">{t('Your generated robot will appear here')}</p>
+                    <br />
+                    <DefaultImage />
+                  </>
+                ) : (
                   generatedImage ? (
                     <>
                       <h2 className="text-2xl font-semibold mb-4">{t('Generated Robot:')}</h2>
@@ -170,12 +171,9 @@ function App() {
                   )
                 )}
                 <br />
-
-                {moreImages && moreImages.length > 0 && <ImageGallery images={moreImages} />}
-
+                {moreImages.length > 0 && <ImageGallery images={moreImages} />}
               </div>
             </div>
-
           </div>
         </div>
       </div>

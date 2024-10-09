@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import InputWithRandom from "@/components/ui/inputWithRandom";
-
+import Checkbox from '@/components/ui/checkbox';
 
 interface RobotFormProps {
   initialData: Robot;
@@ -209,33 +209,9 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, callback }
       </div>
 
       <div className="space-y-2">
-        {/* 
-        <Input
-          type="checkbox"
-          id="generate-multiple"
-          checked={generateMultiple}
-          onChange={(e) => setGenerateMultiple(e.target.checked)}
-        /> */}
-
-        <div
-          className="flex items-center space-x-2 cursor-pointer"
-          onClick={() => setGenerateMultiple(!generateMultiple)}
-        >
-          {generateMultiple ? (
-            <CheckSquare className="text-blue-500" />
-          ) : (
-            <Square className="text-gray-500" />
-          )}
-          <Input
-            type="checkbox"
-            id="generate-multiple"
-            checked={generateMultiple}
-            onChange={(e) => setGenerateMultiple(e.target.checked)}
-            className="hidden" // 隐藏默认复选框
-          />
-          <Label htmlFor="generate-multiple">{t('Generate 20 Images')}</Label>
-        </div>
-
+        <Checkbox label={t('Generate 20 Images')}
+          onChange={(checked) => setGenerateMultiple(checked)}
+        />
       </div>
 
       <div className="flex space-x-4">

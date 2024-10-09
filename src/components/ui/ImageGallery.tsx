@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Lightbox from '@icetee/react-image-lightbox';
 import '@icetee/react-image-lightbox/style.css'; // 这个文件需要单独引入
 
+
 const ImageGallery = ({ images }: { images: string[] }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
@@ -25,6 +26,11 @@ const ImageGallery = ({ images }: { images: string[] }) => {
     cursor: 'pointer',
   };
 
+  const handleThumbnailClick = (index: number) => {
+    setPhotoIndex(index);
+    setIsOpen(true);
+  };
+
   return (
     <div>
       <div style={galleryStyle}>
@@ -33,10 +39,7 @@ const ImageGallery = ({ images }: { images: string[] }) => {
             key={index}
             src={image}
             alt={`Gallery Image ${index + 1}`}
-            onClick={() => {
-              setPhotoIndex(index);
-              setIsOpen(true);
-            }}
+            onClick={() => handleThumbnailClick(index)}
             style={thumbnailStyle}
           />
         ))}
