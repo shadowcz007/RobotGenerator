@@ -14,7 +14,7 @@ function App() {
   const { t, i18n } = useTranslation();
   const [robot, setRobot] = useState<Robot | null>(null);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
-  const [apiKey, setApiKey] = useState(localStorage.getItem("_apiKey") || "");
+
   const [prompt, setPrompt] = useState(localStorage.getItem("_prompt") || "");
 
   const [init, setInit] = useState(true);
@@ -46,15 +46,18 @@ function App() {
   }, []);
 
   const handleCallback = async (data: any) => {
-    if (data && data.type === 'randomField') {
+    const apiKey = localStorage.getItem("_apiKey") || ""
+    if (data && data.type === 'randomField' && apiKey) {
+      // console.log(apiKey)
       return await moreSimilarText(data.data, apiKey)
     }
-
   }
 
   const handleSubmit = async (data: any) => {
     // TODO: Replace with actual API call
     console.log('Submitting data:', data);
+
+    const apiKey = localStorage.getItem("_apiKey") || ""
     // Simulating API response
 
     setRobot(data);
@@ -105,9 +108,9 @@ function App() {
                 <Label htmlFor="head-shape">{t('Siliconflow API Key')}</Label>
                 <Input
                   type="password"
-                  value={apiKey}
+                  value={localStorage.getItem("_apiKey") || ""}
                   onChange={(e) => {
-                    setApiKey(e.target.value)
+                    console.log("#set key", e.target.value)
                     localStorage.setItem("_apiKey", e.target.value)
                   }}
                   className="flex-grow"

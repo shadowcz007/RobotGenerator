@@ -67,6 +67,7 @@ export async function generateText(prompt: string, apiKey: string, temperature =
         headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
         body: body
     };
+    // console.log("#apikey",apiKey)
     try {
         const response = await fetch(`${APIURL}/v1/chat/completions`, options1);
         const res = await response.json();
@@ -77,17 +78,17 @@ export async function generateText(prompt: string, apiKey: string, temperature =
         }
         return content
     } catch (err) {
-        console.error(err);
+        console.log(err);
     }
     return
 }
 
 export async function moreSimilarText(texts: any, apiKey: string) {
-    let text = await generateText(texts.join(","),
+    let data = await generateText(JSON.stringify(texts),
         apiKey,
         0.25,
         2048,
-        false,
+        true,
         `
         根据提供的示例文本，创建更多在同一个类别下面的不同子类变体。
 
@@ -116,7 +117,9 @@ export async function moreSimilarText(texts: any, apiKey: string) {
         *   保持所有子类在同一类别下。
         *   确保每个子类的描述都清晰且具有独特性。`.trim()
     )
-    if (text) return text
+    if (data && data.result) {
+        return data.result
+    }
     return
 }
 

@@ -105,8 +105,12 @@ const compositions = [
   '适合社交媒体头像的正面构图'
 ]
 
-function getRandomElement<T> (array: T[]): T {
-  return array[Math.floor(Math.random() * array.length)]
+function getRandomElement<T> (array: T[], key: any, keywords: any): T {
+  let data = [...array]
+  if (key && keywords && keywords.length > 0) {
+    data = [...array, ...keywords]
+  }
+  return data[Math.floor(Math.random() * data.length)]
 }
 
 export function getBasic () {
@@ -154,28 +158,28 @@ export function getBasicKeywords (key: any) {
   return d[key]
 }
 
-export function generateRandomRobot (): Robot {
+export function generateRandomRobot (key: any, keywords: any): Robot {
   return {
     head: {
-      color: getRandomElement(headColors),
-      shape: getRandomElement(headShapes),
+      color: getRandomElement(headColors, key, keywords),
+      shape: getRandomElement(headShapes, key, keywords),
       details: {
-        screen: getRandomElement(screenTypes),
-        buttons_and_knobs: getRandomElement(buttonTypes)
+        screen: getRandomElement(screenTypes, key, keywords),
+        buttons_and_knobs: getRandomElement(buttonTypes, key, keywords)
       }
     },
     body: {
-      clothing: getRandomElement(clothingStyles),
-      accessories: getRandomElement(accessoryTypes)
+      clothing: getRandomElement(clothingStyles, key, keywords),
+      accessories: getRandomElement(accessoryTypes, key, keywords)
     },
     legs: {
-      style: getRandomElement(legStyles),
-      shoes: getRandomElement(shoeTypes)
+      style: getRandomElement(legStyles, key, keywords),
+      shoes: getRandomElement(shoeTypes, key, keywords)
     },
     overall_style: {
-      color_tone: getRandomElement(colorTones),
-      material: getRandomElement(materials),
-      composition: getRandomElement(compositions)
+      color_tone: getRandomElement(colorTones, key, keywords),
+      material: getRandomElement(materials, key, keywords),
+      composition: getRandomElement(compositions, key, keywords)
     }
   }
 }
