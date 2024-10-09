@@ -53,9 +53,10 @@ function App() {
     }
   }
 
-  const handleSubmit = async (data: any) => {
+  const handleSubmit = async (formData: any) => {
     // TODO: Replace with actual API call
-    console.log('Submitting data:', data);
+    console.log('Submitting data:', formData);
+    let { data, generateMultiple } = formData
 
     const apiKey = localStorage.getItem("_apiKey") || ""
     // Simulating API response
