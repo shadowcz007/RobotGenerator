@@ -2,9 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Robot, generateRandomRobot, describeImage } from './utils/robotGenerator';
 import RobotForm from '@/components/RobotForm';
-import { Cpu } from 'lucide-react';
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Cpu } from 'lucide-react'; 
 import DefaultImage from '@/components/DefaultImage';
 import { Loading } from "@/components/ui/loading"
 import ImageGallery from '@/components/ui/ImageGallery';
