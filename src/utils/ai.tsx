@@ -178,6 +178,7 @@ export async function writeXHSText(texts: any, apiKey: string) {
         *   可以根据具体的文字内容增加适当的表情符号和标签。`.trim()
     );
 
+    //- json_object 模式，输出的json有时候不正常，改用文本输出，用json分割处理
     try {
         if (data) {
             data = data.match(/{[^]*}/)[0]
