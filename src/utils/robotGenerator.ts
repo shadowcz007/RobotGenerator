@@ -113,6 +113,38 @@ function getRandomElement<T> (array: T[], key: any, keywords: any): T {
   return data[Math.floor(Math.random() * data.length)]
 }
 
+export class Keywords {
+  moreKeywords: any
+  constructor () {
+    //更多的种子词
+    this.moreKeywords = {}
+    try {
+      let d: any = localStorage.getItem('_moreKeywords')
+      this.moreKeywords = JSON.parse(d)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  addKeywords (key: any, newKeywords: any) {
+    // 如果key不存在，初始化为一个空数组
+    if (!this.moreKeywords[key]) {
+      this.moreKeywords[key] = []
+    }
+
+    // 遍历newKeywords数组，逐个添加元素
+    newKeywords.forEach((newKeyword: any) => {
+      // 检查新关键字是否已经存在于数组里
+      if (!this.moreKeywords[key].includes(newKeyword)) {
+        this.moreKeywords[key].push(newKeyword)
+      }
+    })
+    localStorage.setItem('_moreKeywords', JSON.stringify(this.moreKeywords))
+  }
+  getKeywords (key: any) {
+    return this.moreKeywords[key]
+  }
+}
+
 export function getBasic () {
   return {
     head: {
@@ -158,7 +190,10 @@ export function getBasicKeywords (key: any) {
   return d[key]
 }
 
-export function generateRandomRobot (key: any=null, keywords: any=null): Robot {
+export function generateRandomRobot (
+  key: any = null,
+  keywords: any = null
+): Robot {
   return {
     head: {
       color: getRandomElement(headColors, key, keywords),
