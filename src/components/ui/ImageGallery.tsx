@@ -1,16 +1,12 @@
 import { useState, useEffect } from 'react';
-import Lightbox from '@icetee/react-image-lightbox';
-import '@icetee/react-image-lightbox/style.css'; // 这个文件需要单独引入
+import { Gallery, Item } from 'react-photoswipe-gallery';
+import 'photoswipe/dist/photoswipe.css';
 
-
-const ImageGallery = ({ images }: { images: string[] }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [photoIndex, setPhotoIndex] = useState(0);
+const ImageGallery = ({ images,width,height }: { images: string[],width:number,height:number }) => {
+  const [galleryImages, setGalleryImages] = useState<string[]>([]);
 
   useEffect(() => {
-    // 当 images 变化时，重置 photoIndex 和 isOpen 状态
-    setPhotoIndex(0);
-    setIsOpen(false);
+    setGalleryImages(images);
   }, [images]);
 
   const galleryStyle: React.CSSProperties = {
@@ -24,42 +20,44 @@ const ImageGallery = ({ images }: { images: string[] }) => {
     objectFit: 'cover',
     margin: '5px',
     cursor: 'pointer',
+    transition: 'transform 0.2s', // Add transition for smooth zoom effect
   };
 
-  const handleThumbnailClick = (index: number) => {
-    setPhotoIndex(index);
-    setIsOpen(true);
+  const handleMouseOver = (e: React.MouseEvent<HTMLImageElement>) => {
+    e.currentTarget.style.transform = 'scale(1.1)'; // Zoom in on hover
+  };
+
+  const handleMouseOut = (e: React.MouseEvent<HTMLImageElement>) => {
+    e.currentTarget.style.transform = 'scale(1)'; // Zoom out on mouse out
   };
 
   return (
-    <div>
+    <Gallery>
       <div style={galleryStyle}>
-        {images.map((image, index) => (
-          <img
+        {galleryImages.map((image, index) => (
+          <Item
             key={index}
-            src={image}
-            alt={`Gallery Image ${index + 1}`}
-            onClick={() => handleThumbnailClick(index)}
-            style={thumbnailStyle}
-          />
+            original={image}
+            thumbnail={image}
+            width={width}
+            height={height}
+            // title={`Gallery Image ${index + 1}`} // Add title for better description
+          >
+            {({ ref, open }) => (
+              <img
+                ref={ref}
+                onClick={open}
+                src={image}
+                alt={`Gallery Image ${index + 1}`}
+                style={thumbnailStyle}
+                onMouseOver={handleMouseOver}
+                onMouseOut={handleMouseOut}
+              />
+            )}
+          </Item>
         ))}
       </div>
-
-      {isOpen && (
-        <Lightbox
-          mainSrc={images[photoIndex]}
-          nextSrc={images[(photoIndex + 1) % images.length]}
-          prevSrc={images[(photoIndex + images.length - 1) % images.length]}
-          onCloseRequest={() => setIsOpen(false)}
-          onMovePrevRequest={() =>
-            setPhotoIndex((photoIndex + images.length - 1) % images.length)
-          }
-          onMoveNextRequest={() =>
-            setPhotoIndex((photoIndex + 1) % images.length)
-          }
-        />
-      )}
-    </div>
+    </Gallery>
   );
 };
 

@@ -171,7 +171,7 @@ function App() {
                   )
                 )}
                 <br />
-                {moreImages.length > 0 && <ImageGallery images={moreImages} />}
+                {moreImages.length > 0 && <ImageGallery images={moreImages} width={768} height={768}/>}
               </div>
             </div>
           </div>
