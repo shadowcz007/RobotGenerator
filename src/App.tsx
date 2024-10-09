@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import DefaultImage from '@/components/DefaultImage';
 import { Loading } from "@/components/ui/loading"
 import './i18n'; // 引入 i18n 配置
+import { translateToEn, generateImage, moreSimilarText } from './utils/ai'
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -35,7 +36,7 @@ function App() {
     } catch (error) {
       console.log(error)
     }
-    console.log('robot', d)
+    // console.log('robot', d)
     if (!d.legs) {
       d = generateRandomRobot()
     }
@@ -44,58 +45,17 @@ function App() {
 
   }, []);
 
+  const handleCallback = async (data: any) => {
+    if (data && data.type === 'randomField') {
+      return await moreSimilarText(data.data, apiKey)
+    }
+
+  }
+
   const handleSubmit = async (data: any) => {
     // TODO: Replace with actual API call
     console.log('Submitting data:', data);
     // Simulating API response
-
-    function containsChinese(str: string) {
-      const chineseRegex = /[\u4e00-\u9fa5]/
-      return chineseRegex.test(str)
-    }
-
-    const llmData = (
-      content: any,
-      temperature = 0.25,
-      max_tokens = 1512,
-      json_object = false,
-      systemPrompt = null
-    ) => {
-      let messages = [
-        {
-          role: 'user',
-          content
-        }
-      ]
-      if (systemPrompt) {
-        messages = [
-          {
-            role: 'system',
-            content: systemPrompt
-          },
-          ...messages
-        ]
-      }
-
-      let d: any = {
-        model: 'THUDM/glm-4-9b-chat', //'01-ai/Yi-1.5-9B-Chat-16K',
-        messages,
-        stream: false,
-        max_tokens,
-        temperature,
-        top_p: 0.7,
-        top_k: 50,
-        frequency_penalty: 0.5,
-        n: 1
-      }
-
-      if (json_object)
-        d.response_format = {
-          type: 'json_object'
-        }
-
-      return JSON.stringify(d)
-    }
 
     setRobot(data);
 
@@ -105,47 +65,12 @@ function App() {
 
     data = describeImage(data);
 
-    if (containsChinese(data)) {
-      const body = llmData(
-        `Translate '''${data}''' into English, and do not output any other irrelevant information,ensuring the sentence has a coherent and logical structure.`,
-        0.25,
-        2048
-      )
+    data = await translateToEn(data, apiKey) || data;
 
-      const options1 = {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-        body: body
-      };
-      try {
-        const response = await fetch('https://api.siliconflow.cn/v1/chat/completions', options1);
-        const res = await response.json();
-        console.log(res);
-        data = res.choices[0].message.content
-      } catch (err) {
-        console.error(err);
-      }
-    }
+    let imgurl = await generateImage(`A human with a head resembling a vintage computer.` + data, apiKey)
 
-    const options = {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        "model": "black-forest-labs/FLUX.1-schnell",
-        "prompt": `A human with a head resembling a vintage computer.` + data,
-        "image_size": "1024x1024"
-      })
-    };
-
-
-    try {
-      const response = await fetch('https://api.siliconflow.cn/v1/image/generations', options);
-      const data = await response.json();
-      console.log(data);
-
-      setGeneratedImage(data.images[0].url)
-    } catch (err) {
-      console.error(err);
+    if (imgurl) {
+      setGeneratedImage(imgurl)
     }
 
     // setGeneratedImage('https://source.unsplash.com/random/400x400?robot');
@@ -192,6 +117,7 @@ function App() {
               {robot && <RobotForm
                 initialData={robot}
                 onSubmit={handleSubmit}
+                callback={handleCallback}
               />}
             </div>
           </div>

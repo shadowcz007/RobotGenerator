@@ -1,17 +1,19 @@
 import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Robot, generateRandomRobot, getBasic } from '../utils/robotGenerator';
+import { Robot, generateRandomRobot, getBasic, getBasicKeywords } from '../utils/robotGenerator';
 import { Shuffle } from 'lucide-react';
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
+ 
 interface RobotFormProps {
   initialData: Robot;
   onSubmit: (data: Robot) => void;
+  callback: (data: any) => void;
 }
 
-const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit }) => {
+const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, callback }) => {
   const { t } = useTranslation();
   const [formData, setFormData] = React.useState<Robot>(initialData);
 
@@ -30,20 +32,31 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit }) => {
     });
   }, []);
 
-  const handleRandomField = useCallback((category: keyof Robot, subCategory?: string, field?: string) => {
+  // 增加LLM
+  const handleRandomField = useCallback(async (category: keyof Robot, subCategory?: string, field?: string) => {
     const newRobot: any = generateRandomRobot();
     setFormData((prev: any) => {
       const newState = { ...prev };
       // console.log("random", newRobot, newState,category, subCategory, field)
-      if(subCategory){
+      if (subCategory) {
         //@ts-ignore
-        newState[category][subCategory][field]=newRobot[category][subCategory][field];
-      }else{
+        newState[category][subCategory][field] = newRobot[category][subCategory][field];
+      } else {
         //@ts-ignore
-        newState[category][field]=newRobot[category][field];
-      } 
+        newState[category][field] = newRobot[category][field];
+      }
       return newState;
     });
+
+    let ks = getBasicKeywords(field);
+    if (callback) {
+     let result= await callback({
+        data: ks,
+        type: 'randomField'
+      })
+      console.log(result)
+    }
+
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {

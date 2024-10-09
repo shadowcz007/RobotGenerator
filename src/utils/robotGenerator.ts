@@ -135,6 +135,25 @@ export function getBasic () {
   }
 }
 
+export function getBasicKeywords (key: any) {
+  let d: any = {
+    color: headColors,
+    shape: headShapes,
+    screen: screenTypes,
+    buttons_and_knobs: buttonTypes,
+    clothing: clothingStyles,
+    accessories: accessoryTypes,
+
+    style: legStyles,
+    shoes: shoeTypes,
+
+    color_tone: colorTones,
+    material: materials,
+    composition: compositions
+  }
+  return d[key]
+}
+
 export function generateRandomRobot (): Robot {
   return {
     head: {
