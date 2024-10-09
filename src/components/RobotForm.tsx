@@ -34,23 +34,14 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit }) => {
     const newRobot: any = generateRandomRobot();
     setFormData((prev: any) => {
       const newState = { ...prev };
-
-      if (subCategory && field) {
-        if (!newState[category]) newState[category] = {};
-        if (!newState[category][subCategory]) newState[category][subCategory] = {};
-        newState[category][subCategory][field] = newRobot[category][subCategory][field];
-      } else if (subCategory) {
-        if (!newState[category]) newState[category] = {};
-        newState[category][subCategory] = newRobot[category][subCategory];
-      } else {
-        if (!newState[category]) newState[category] = {};
-        for (const key in newRobot[category]) {
-          if (newRobot[category].hasOwnProperty(key)) {
-            newState[category][key] = newRobot[category][key];
-          }
-        }
-      }
-
+      // console.log("random", newRobot, newState,category, subCategory, field)
+      if(subCategory){
+        //@ts-ignore
+        newState[category][subCategory][field]=newRobot[category][subCategory][field];
+      }else{
+        //@ts-ignore
+        newState[category][field]=newRobot[category][field];
+      } 
       return newState;
     });
   }, []);
