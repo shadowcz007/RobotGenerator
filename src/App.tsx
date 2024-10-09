@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import DefaultImage from '@/components/DefaultImage';
 import { Loading } from "@/components/ui/loading"
 import ImageGallery from '@/components/ui/ImageGallery';
+import ApiKeyInput from '@/components/ui/inputApiKey';
 
 import './i18n'; // 引入 i18n 配置
 import { translateToEn, generateImage, moreSimilarText } from './utils/ai'
@@ -131,8 +132,12 @@ function App() {
       <div className="container mx-auto">
         <div className="flex flex-col lg:flex-row gap-8">
           <div className="w-full lg:w-1/2">
+
+            <ApiKeyInput label={t('Siliconflow API Key')} />
+
             <div className="bg-card shadow-md rounded-lg p-6">
-              <div className="space-y-2">
+
+              {/* <div className="space-y-2">
                 <Label htmlFor="head-shape">{t('Siliconflow API Key')}</Label>
                 <Input
                   type="password"
@@ -140,10 +145,11 @@ function App() {
                   onChange={(e) => localStorage.setItem("_apiKey", e.target.value)}
                   className="flex-grow"
                 />
-              </div>
+              </div> */}
 
               {robot && <RobotForm initialData={robot} onSubmit={handleSubmit} callback={handleCallback} />}
             </div>
+
           </div>
           <div className="w-full lg:w-1/2">
             <div className="bg-card shadow-md rounded-lg p-6 flex flex-col justify-between items-center">
@@ -171,7 +177,7 @@ function App() {
                   )
                 )}
                 <br />
-                {moreImages.length > 0 && <ImageGallery images={moreImages} width={768} height={768}/>}
+                {moreImages.length > 0 && <ImageGallery images={moreImages} width={768} height={768} />}
               </div>
             </div>
           </div>
