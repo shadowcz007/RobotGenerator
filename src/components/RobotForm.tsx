@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Robot, generateRandomRobot, getBasic, getBasicKeywords } from '../utils/robotGenerator';
+import { Robot, generateRandomRobot, getBasic, getBasicKeywords, Keywords } from '../utils/robotGenerator';
 import { Shuffle } from 'lucide-react';
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -17,21 +17,8 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, callback }
   const { t } = useTranslation();
   const [formData, setFormData] = React.useState<Robot>(initialData);
   //更多的种子词
-  const moreKeywords: any = {}
-  const addKeywords = (key: any, newKeywords: any) => {
-    // 如果key不存在，初始化为一个空数组
-    if (!moreKeywords[key]) {
-      moreKeywords[key] = [];
-    }
+  const moreKeywords = new Keywords()
 
-    // 遍历newKeywords数组，逐个添加元素
-    newKeywords.forEach((newKeyword: any) => {
-      // 检查新关键字是否已经存在于数组里
-      if (!moreKeywords[key].includes(newKeyword)) {
-        moreKeywords[key].push(newKeyword);
-      }
-    });
-  }
 
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>, category: keyof Robot, subCategory?: string, field?: string) => {
@@ -51,7 +38,7 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, callback }
 
   // 增加LLM
   const handleRandomField = useCallback(async (category: keyof Robot, subCategory?: string, field?: any) => {
-    const newRobot: any = generateRandomRobot(field, moreKeywords[field]);
+    const newRobot: any = generateRandomRobot(field, moreKeywords.getKeywords(field));
     setFormData((prev: any) => {
       const newState = { ...prev };
       // console.log("random", newRobot, newState,category, subCategory, field)
@@ -72,10 +59,10 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, callback }
         type: 'randomField'
       })
       if (result && Array.isArray(result) && result[0] && typeof (result[0] === 'string')) {
-        addKeywords(field, result)
+        moreKeywords.addKeywords(field, result)
       }
 
-      console.log(result, typeof (result), moreKeywords[field])
+      console.log(result, typeof (result), moreKeywords.getKeywords(field))
     }
 
   }, []);
