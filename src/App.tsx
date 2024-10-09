@@ -86,11 +86,14 @@ function App() {
     }
 
     if (generateMultiple) {
-      await sleep(1000)
+      await sleep(1200)
       for (let index = 0; index < 20; index++) {
         let imgurl1 = await generateImage(`A human with a head resembling a vintage computer.` + data, apiKey)
-        setMoreImages([...moreImages, imgurl1])
-        await sleep(1200)
+        if (imgurl1) {
+          setMoreImages([...moreImages, imgurl1]);
+          await sleep(3200)
+        }
+
       }
     }
 

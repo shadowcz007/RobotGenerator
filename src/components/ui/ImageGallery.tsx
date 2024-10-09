@@ -1,17 +1,23 @@
-import { useState } from 'react';
-import Lightbox from 'react-image-lightbox';
-import 'react-image-lightbox/style.css'; // 这个文件需要单独引入
+import { useState, useEffect } from 'react';
+import Lightbox from '@icetee/react-image-lightbox';
+import '@icetee/react-image-lightbox/style.css'; // 这个文件需要单独引入
 
-const ImageGallery = ({ images }: any) => {
+const ImageGallery = ({ images }: { images: string[] }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
 
-  const galleryStyle: any = {
+  useEffect(() => {
+    // 当 images 变化时，重置 photoIndex 和 isOpen 状态
+    setPhotoIndex(0);
+    setIsOpen(false);
+  }, [images]);
+
+  const galleryStyle: React.CSSProperties = {
     display: 'flex',
     flexWrap: 'wrap',
   };
 
-  const thumbnailStyle: any = {
+  const thumbnailStyle: React.CSSProperties = {
     width: '100px',
     height: '100px',
     objectFit: 'cover',
@@ -22,7 +28,7 @@ const ImageGallery = ({ images }: any) => {
   return (
     <div>
       <div style={galleryStyle}>
-        {images.map((image: any, index: any) => (
+        {images.map((image, index) => (
           <img
             key={index}
             src={image}
