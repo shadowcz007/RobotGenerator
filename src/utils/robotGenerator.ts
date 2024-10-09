@@ -158,7 +158,7 @@ export function getBasicKeywords (key: any) {
   return d[key]
 }
 
-export function generateRandomRobot (key: any, keywords: any): Robot {
+export function generateRandomRobot (key: any=null, keywords: any=null): Robot {
   return {
     head: {
       color: getRandomElement(headColors, key, keywords),

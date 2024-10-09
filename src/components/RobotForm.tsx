@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
- 
+
 interface RobotFormProps {
   initialData: Robot;
   onSubmit: (data: Robot) => void;
@@ -17,22 +17,22 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, callback }
   const { t } = useTranslation();
   const [formData, setFormData] = React.useState<Robot>(initialData);
   //更多的种子词
-  const moreKeywords:any={}
-  const addKeywords=(key:any, newKeywords:any)=> {
+  const moreKeywords: any = {}
+  const addKeywords = (key: any, newKeywords: any) => {
     // 如果key不存在，初始化为一个空数组
     if (!moreKeywords[key]) {
       moreKeywords[key] = [];
     }
-    
+
     // 遍历newKeywords数组，逐个添加元素
-    newKeywords.forEach((newKeyword:any) => {
+    newKeywords.forEach((newKeyword: any) => {
       // 检查新关键字是否已经存在于数组里
       if (!moreKeywords[key].includes(newKeyword)) {
         moreKeywords[key].push(newKeyword);
       }
     });
   }
-  
+
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>, category: keyof Robot, subCategory?: string, field?: string) => {
     const { value } = e.target;
@@ -51,7 +51,7 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, callback }
 
   // 增加LLM
   const handleRandomField = useCallback(async (category: keyof Robot, subCategory?: string, field?: any) => {
-    const newRobot: any = generateRandomRobot(field,moreKeywords[field]);
+    const newRobot: any = generateRandomRobot(field, moreKeywords[field]);
     setFormData((prev: any) => {
       const newState = { ...prev };
       // console.log("random", newRobot, newState,category, subCategory, field)
@@ -67,15 +67,15 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, callback }
 
     let ks = getBasicKeywords(field);
     if (callback) {
-     let result:any= await callback({
+      let result: any = await callback({
         data: ks,
         type: 'randomField'
       })
-      if(result&&Array.isArray(result)&&result[0]&&typeof(result[0]==='string')){
-        addKeywords(field,result)
+      if (result && Array.isArray(result) && result[0] && typeof (result[0] === 'string')) {
+        addKeywords(field, result)
       }
-      
-      console.log(result,typeof(result))
+
+      console.log(result, typeof (result), moreKeywords[field])
     }
 
   }, []);
