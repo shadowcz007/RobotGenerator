@@ -9,9 +9,10 @@ import DefaultImage from '@/components/DefaultImage';
 import { Loading } from "@/components/ui/loading"
 import ImageGallery from '@/components/ui/ImageGallery';
 import ApiKeyInput from '@/components/ui/inputApiKey';
+import WriteButton from './components/ui/buttonWrite';
 
 import './i18n'; // 引入 i18n 配置
-import { translateToEn, generateImage, moreSimilarText } from './utils/ai'
+import { translateToEn, generateImage, moreSimilarText, writeXHSText } from './utils/ai'
 
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -116,6 +117,17 @@ function App() {
     localStorage.setItem("_language", newLanguage);
   };
 
+  const handleWrite = async () => {
+    const apiKey = localStorage.getItem("_apiKey") || "";
+
+    if (apiKey) {
+      let result = await writeXHSText(describeImage(robot), apiKey)
+      if (result) {
+        setPrompt(result)
+      }
+    }
+  }
+
   if (!robot) return <>loading</>;
 
   return (
@@ -153,11 +165,16 @@ function App() {
           </div>
           <div className="w-full lg:w-1/2">
             <div className="bg-card shadow-md rounded-lg p-6 flex flex-col justify-between items-center">
-              <div className="w-full flex flex-col justify-center items-start">
-                <p>{t('Prompt:')}</p>
+              {/* <div className="w-full flex flex-col justify-center items-start">
+                <p></p>
                 <p className="text-muted-foreground text-left">{prompt}</p>
                 <br />
-              </div>
+              </div> */}
+
+              <WriteButton label={t('Prompt:')}
+                initialPrompt={prompt}
+                onWrite={handleWrite} />
+
 
               <div className="w-full flex flex-col justify-center items-start">
                 {init ? (
