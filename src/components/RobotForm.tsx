@@ -1,9 +1,8 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Robot, generateRandomRobot, getBasic, getBasicKeywords, Keywords } from '../utils/robotGenerator';
-import { CheckSquare, Square, Shuffle } from 'lucide-react';
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import {   Shuffle } from 'lucide-react';
+import { Button } from "@/components/ui/button" 
 import { Label } from "@/components/ui/label"
 import InputWithRandom from "@/components/ui/inputWithRandom";
 import Checkbox from '@/components/ui/checkbox';
