@@ -8,7 +8,7 @@ const resources = {
     translation: {
       "Siliconflow API Key": "Siliconflow API Key",
       "Submit": "Submit",
-      "Prompt:": "Prompt:",
+      "Prompt": "Prompt:",
       "Generated Robot:": "Generated Robot:",
       "Your generated robot will appear here": "Your generated robot will appear here",
       "Switch to Chinese": "Switch to Chinese",
@@ -37,7 +37,7 @@ const resources = {
     translation: {
       "Siliconflow API Key": "Siliconflow API密钥",
       "Submit": "提交",
-      "Prompt:": "提示词:",
+      "Prompt": "提示词:",
       "Generated Robot:": "生成的机器人:",
       "Your generated robot will appear here": "生成的机器人会显示在这里",
       "Switch to Chinese": "切换到中文",

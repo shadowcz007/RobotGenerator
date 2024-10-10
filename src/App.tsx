@@ -173,13 +173,8 @@ function App() {
 
           </div>
           <div className="w-full lg:w-1/2">
+
             <div className="bg-card shadow-md rounded-lg p-6 flex flex-col justify-between items-center">
-
-
-              <WriteButton label={t('Prompt:')}
-                initialPrompt={prompt}
-                onWrite={handleWrite} />
-
 
               <div className="w-full flex flex-col justify-center items-start">
                 {init ? (
@@ -202,6 +197,12 @@ function App() {
                 {moreImages.length > 0 && <ImageGallery images={moreImages} width={768} height={768} />}
               </div>
             </div>
+
+            
+            <WriteButton label={t('Prompt')}
+              initialPrompt={prompt}
+              onWrite={handleWrite} />
+
           </div>
         </div>
       </div>

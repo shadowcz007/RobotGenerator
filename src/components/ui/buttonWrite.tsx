@@ -8,25 +8,24 @@ interface WriteButtonProps {
 }
 
 const WriteButton: React.FC<WriteButtonProps> = ({ label, initialPrompt, onWrite }) => {
-    const [prompt, setPrompt] = useState(initialPrompt);
-
+    const [prompt, setPrompt] = useState(initialPrompt); 
     useEffect(() => {
         setPrompt(initialPrompt);
     }, [initialPrompt]);
 
     return (
-        <div className="w-full">
-            <p>{label}</p>
-            <span className="text-muted-foreground text-left inline-flex items-center">
-                {prompt}
-                <span 
-                    className="ml-2 cursor-pointer p-1 border rounded hover:bg-gray-200 inline-flex items-center"
-                    onClick={onWrite}
-                >
-                    <Pencil className="h-4 w-4" />
+        <div className="bg-card shadow-md rounded-lg p-6 my-8">
+            <div className="w-full">
+                <p>{label}</p>
+                <span className="text-muted-foreground text-left inline-flex items-end">
+                    {prompt}
+
+                    <button onClick={onWrite} className="focus:outline-none">
+                        <Pencil className="h-5 w-5" />
+                    </button>
+
                 </span>
-            </span>
-        </div>
+            </div></div>
     );
 };
 
