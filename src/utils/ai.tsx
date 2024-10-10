@@ -197,118 +197,112 @@ export async function writeXHSText(texts: any, apiKey: string) {
 
 export async function createByNews(text: string, apiKey: any) {
     let prompt = `
-    根据输入的一段\[文字\]，创建合适的着装打扮，最终结果用JSON格式输出。
+根据输入的任意一段[文字]，提炼核心信息，推理创建合适的着装打扮，结构参考要求如下：
 
-    Steps
-    =====
+*   每个值都是唯一的string类型
+*   最终结果用json格式输出
 
-    1.  分析输入文字，提取相关信息，如性别、场合、季节等。
-    2.  根据提取的信息，设计头部、身体、腿部和整体风格的着装细节。
-    3.  将设计的着装细节按照指定结构组织。
-    4.  用JSON格式输出最终结果。
+Output Format
+=============
 
-    Output Format
-    =============
+请按照以下结构输出json格式的着装打扮建议：
 
-    JSON格式，包含以下结构：
-
-    {
-    "head": {
-        "color": "[颜色]",
-        "shape": "[形状]",
-        "details": {
-        "screen": "[屏幕详情]",
-        "buttons_and_knobs": "[按键和旋钮]"
-        }
-    },
-    "body": {
-        "clothing": "[服装描述]",
-        "accessories": "[配件描述]"
-    },
-    "legs": {
-        "style": "[裤子风格]",
-        "shoes": "[鞋子描述]"
-    },
-    "overall_style": {
-        "color_tone": "[色调]",
-        "material": "[材质]",
-        "composition": "[构图]"
+{
+  "head": {
+    "color": "[颜色]",
+    "shape": "[形状]",
+    "details": {
+      "screen": "[屏幕显示内容]",
+      "buttons_and_knobs": "[按键和旋钮描述]"
     }
+  },
+  "body": {
+    "clothing": "[衣物描述]",
+    "accessories": "[配饰描述]"
+  },
+  "legs": {
+    "style": "[裤子风格]",
+    "shoes": "[鞋子描述]"
+  },
+  "overall_style": {
+    "color_tone": "[色调]",
+    "material": "[材质]",
+    "composition": "[全身构图描述]"
+  }
+}
+
+
+Examples
+========
+
+### Example 1
+
+**Input:**
+
+这段文字描述了一个未来感十足的实验室，墙壁是白色的，地板是金属质感的，研究人员穿着带有公司标志的衣物，使用全息投影仪进行数据分析。
+
+**Output:**
+
+
+{
+  "head": {
+    "color": "白色",
+    "shape": "导角方块",
+    "details": {
+      "screen": "显示字母'MIXLAB'",
+      "buttons_and_knobs": "发光的按键"
     }
+  },
+  "body": {
+    "clothing": "纯白色印着MIXLAB的毛衣",
+    "accessories": "手腕上的全息投影仪"
+  },
+  "legs": {
+    "style": "黑色的高腰裤",
+    "shoes": "黑色的金属靴子"
+  },
+  "overall_style": {
+    "color_tone": "柔和、低调的色调",
+    "material": "类似旧电子设备的纹理",
+    "composition": "全身构图"
+  }
+}
 
-    Examples
-    ========
 
-    ### Example 1
+### Example 2
 
-    #### Input
+**Input:**
 
-    一段描述文字: "这是一场科技展览会，参与者需要穿着未来感十足的服装。"
+描述一个充满自然元素的场景，树木郁郁葱葱，地面覆盖着厚厚的落叶，人物穿着宽松的棉质衣物，显得非常舒适和自然。
 
-    #### Output
 
-    {
-    "head": {
-        "color": "银色",
-        "shape": "流线型头盔",
-        "details": {
-        "screen": "显示字母'TECH'",
-        "buttons_and_knobs": "蓝色发光按键"
-        }
-    },
-    "body": {
-        "clothing": "银色的紧身衣",
-        "accessories": "手腕上的全息投影仪"
-    },
-    "legs": {
-        "style": "银色的高腰裤",
-        "shoes": "银色的金属靴子"
-    },
-    "overall_style": {
-        "color_tone": "冷色调",
-        "material": "光滑金属质感",
-        "composition": "未来感十足的整体造型"
+**Output:**
+
+{
+  "head": {
+    "color": "绿色",
+    "shape": "圆形帽子",
+    "details": {
+      "screen": "无显示",
+      "buttons_and_knobs": "无按键"
     }
-    }
+  },
+  "body": {
+    "clothing": "宽松的棉质衬衫",
+    "accessories": "编织手镯"
+  },
+  "legs": {
+    "style": "棕色的亚麻裤",
+    "shoes": "棕色的皮鞋"
+  },
+  "overall_style": {
+    "color_tone": "自然、温暖的色调",
+    "material": "柔软的棉和亚麻",
+    "composition": "舒适和自然的全身构图"
+  }
+}
 
-    ### Example 2
-
-    #### Input
-
-    一段描述文字: "这是一个户外音乐节，参与者需要穿着舒适且有时尚感的服装。"
-
-    #### Output
-
-    {
-    "head": {
-        "color": "白色",
-        "shape": "棒球帽",
-        "details": {
-        "screen": "无",
-        "buttons_and_knobs": "无"
-        }
-    },
-    "body": {
-        "clothing": "印有图案的宽松T恤",
-        "accessories": "太阳镜"
-    },
-    "legs": {
-        "style": "牛仔短裤",
-        "shoes": "运动鞋"
-    },
-    "overall_style": {
-        "color_tone": "明亮、活泼的色调",
-        "material": "轻便、透气的材质",
-        "composition": "舒适且时尚的整体造型"
-    }
-    }
-
-    Notes
-    =====
-
-    *   输入文字中可能包含多种信息，请确保全面分析以提取相关信息。
-    *   设计的着装应符合场合和季节等因素。
-    *   JSON输出需保持一致的格式和结构。`.trim()
+`.trim()
 
     let data = await generateText(text,
         apiKey,
@@ -328,7 +322,7 @@ export async function createByNews(text: string, apiKey: any) {
         console.log(error)
     }
 
-    if (data && typeof(data)=='object') {
+    if (data && typeof (data) == 'object') {
         return data
     }
     return
