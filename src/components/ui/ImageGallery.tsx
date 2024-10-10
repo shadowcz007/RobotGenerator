@@ -1,13 +1,23 @@
 import { useState, useEffect } from 'react';
 import { Gallery, Item } from 'react-photoswipe-gallery';
 import 'photoswipe/dist/photoswipe.css';
+import WriteButton from '@/components/ui/buttonWrite';
 
-const ImageGallery = ({ mainImage, moreImages, width, height }: { mainImage: string, moreImages: string[], width: number, height: number }) => {
+const ImageGallery = ({ mainImage, moreImages, width, height, label, initialPrompt, onWrite }:
+  {
+    mainImage: string, moreImages: string[], width: number, height: number, label: string, initialPrompt: string, onWrite: any
+
+  }) => {
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
+  const [prompt, setPrompt] = useState(initialPrompt);
 
   useEffect(() => {
     setGalleryImages(moreImages);
   }, [moreImages]);
+
+  useEffect(() => {
+    setPrompt(initialPrompt);
+  }, [initialPrompt]);
 
   const galleryStyle: React.CSSProperties = {
     display: 'flex',
@@ -55,6 +65,12 @@ const ImageGallery = ({ mainImage, moreImages, width, height }: { mainImage: str
             )}
 
           </Item>
+
+
+          <WriteButton label={label}
+            initialPrompt={prompt}
+            onWrite={onWrite} />
+
         </div>
 
         <div style={galleryStyle}>
