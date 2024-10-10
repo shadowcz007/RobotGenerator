@@ -6,10 +6,11 @@ import { Cpu } from 'lucide-react';
 import DefaultImage from '@/components/DefaultImage';
 import { Loading } from "@/components/ui/loading"
 import ImageGallery from '@/components/ui/ImageGallery';
-import ApiKeyInput from '@/components/ui/inputApiKey';
-import WriteButton from './components/ui/buttonWrite';
-import LanguageToggle from './components/LanguageToggle';
-import { InputNews } from './components/ui/inputNews';
+import WriteButton from '@/components/ui/buttonWrite';
+import LanguageToggle from '@/components/LanguageToggle';
+import { InputNews } from '@/components/ui/inputNews';
+import SettingsModal from '@/components/SettingsModal';
+import { Settings } from 'lucide-react';
 
 import './i18n'; // 引入 i18n 配置
 import { translateToEn, generateImage, moreSimilarText, writeXHSText, generateText } from './utils/ai'
@@ -37,6 +38,7 @@ function App() {
   const [init, setInit] = useState<boolean>(true);
   const [newsInput, setNewsInput] = useState<string>("");
   const [newsResult, setNewsResult] = useState<string>("");
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
 
   useEffect(() => {
     if (robot) {
@@ -142,22 +144,17 @@ function App() {
         <h1 className="text-3xl font-bold mb-6 flex items-center justify-center">
           <Cpu className="mr-2" /> {t('Robot Generator')}
         </h1>
-        <LanguageToggle />
+        <div className="flex items-center space-x-4">
+          <LanguageToggle />
+          <button onClick={() => setIsSettingsModalOpen(true)} className="bg-card shadow-md rounded-lg p-2">
+            <Settings className="h-5 w-5" />
+          </button>
+        </div>
       </div>
 
       <div className="container mx-auto">
         <div className="flex flex-col lg:flex-row gap-8">
           <div className="w-full lg:w-1/2">
-
-            <ApiKeyInput label={t('Siliconflow API Key')} />
-
-            <InputNews             
-              placeholder={t('Enter news text here...')}
-              value={newsInput}
-              onChange={(e) => setNewsInput(e.target.value)}
-              onSubmit={handleNewsSubmit}
-              label={t('Submit News')}
-            />
 
             <div className="bg-card shadow-md rounded-lg p-6">
               {robot && <RobotForm initialData={robot} onSubmit={handleSubmit} callback={handleCallback} />}
@@ -196,8 +193,23 @@ function App() {
             </div>
           </div>
         </div>
-
+        <div className="mt-8 flex items-center">
+          <InputNews
+            placeholder={t('Enter news text here...')}
+            value={newsInput}
+            onChange={(e) => setNewsInput(e.target.value)}
+            onSubmit={handleNewsSubmit}
+            label={t('Submit News')}
+          />
+        </div>
+        {newsResult && (
+          <div className="mt-4 p-4 bg-gray-200 rounded">
+            <h2 className="text-xl font-semibold mb-2">{t('News Result:')}</h2>
+            <p>{newsResult}</p>
+          </div>
+        )}
       </div>
+      <SettingsModal isOpen={isSettingsModalOpen} onClose={() => setIsSettingsModalOpen(false)} />
     </div>
   );
 }

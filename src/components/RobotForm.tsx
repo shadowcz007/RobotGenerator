@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Robot, generateRandomRobot, getBasic, getBasicKeywords, Keywords } from '../utils/robotGenerator';
-import {   Shuffle } from 'lucide-react';
-import { Button } from "@/components/ui/button" 
+import { Shuffle, ChevronDown } from 'lucide-react';
+import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import InputWithRandom from "@/components/ui/inputWithRandom";
 import Checkbox from '@/components/ui/checkbox';
@@ -17,6 +17,7 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, callback }
   const { t } = useTranslation();
   const [formData, setFormData] = React.useState<Robot>(initialData);
   const [generateMultiple, setGenerateMultiple] = React.useState(false);
+  const [isCollapsed, setIsCollapsed] = React.useState(true);
   //更多的种子词
   const moreKeywords = new Keywords()
 
@@ -75,137 +76,151 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, callback }
     });
   };
 
+  const toggleCollapse = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div>
-        <h2 className="text-xl font-semibold mb-2">{t('Head')}</h2>
-        <div className="space-y-2">
-          <Label htmlFor="head-color">{t('Color')}</Label>
-          <InputWithRandom
-            category="head"
-            field="color"
-            value={formData.head.color}
-            onChange={(e) => handleChange(e, 'head', 'color')}
-            handleRandomField={handleRandomField}
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="head-shape">{t('Shape')}</Label>
-          <InputWithRandom
-            category="head"
-            field="shape"
-            value={formData.head.shape}
-            onChange={(e) => handleChange(e, 'head', 'shape')}
-            handleRandomField={handleRandomField}
-          />
-        </div>
-        <h3 className="text-lg font-semibold mt-3">{t('Details')}</h3>
-        <div className="space-y-2">
-          <Label htmlFor="head-details-screen">{t('Screen')}</Label>
-          <InputWithRandom
-            category="head"
-            subCategory="details"
-            field="screen"
-            value={formData.head.details.screen}
-            onChange={(e) => handleChange(e, 'head', 'details', 'screen')}
-            handleRandomField={handleRandomField}
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="head-details-buttons_and_knobs">{t('Buttons and Knobs')}</Label>
-          <InputWithRandom
-            category="head"
-            subCategory="details"
-            field="buttons_and_knobs"
-            value={formData.head.details.buttons_and_knobs}
-            onChange={(e) => handleChange(e, 'head', 'details', 'buttons_and_knobs')}
-            handleRandomField={handleRandomField}
-          />
-        </div>
+      <div className="flex justify-between items-center">
+        <h2 className="text-xl font-semibold mb-2">{t('Robot Form')}</h2>
+        <button type="button" onClick={toggleCollapse} className="focus:outline-none">
+          <ChevronDown className={`transition-transform ${isCollapsed ? 'rotate-180' : ''}`} />
+        </button>
       </div>
+      {!isCollapsed && (
+        <>
+          <div>
+            <h2 className="text-xl font-semibold mb-2">{t('Head')}</h2>
+            <div className="space-y-2">
+              <Label htmlFor="head-color">{t('Color')}</Label>
+              <InputWithRandom
+                category="head"
+                field="color"
+                value={formData.head.color}
+                onChange={(e) => handleChange(e, 'head', 'color')}
+                handleRandomField={handleRandomField}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="head-shape">{t('Shape')}</Label>
+              <InputWithRandom
+                category="head"
+                field="shape"
+                value={formData.head.shape}
+                onChange={(e) => handleChange(e, 'head', 'shape')}
+                handleRandomField={handleRandomField}
+              />
+            </div>
+            <h3 className="text-lg font-semibold mt-3">{t('Details')}</h3>
+            <div className="space-y-2">
+              <Label htmlFor="head-details-screen">{t('Screen')}</Label>
+              <InputWithRandom
+                category="head"
+                subCategory="details"
+                field="screen"
+                value={formData.head.details.screen}
+                onChange={(e) => handleChange(e, 'head', 'details', 'screen')}
+                handleRandomField={handleRandomField}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="head-details-buttons_and_knobs">{t('Buttons and Knobs')}</Label>
+              <InputWithRandom
+                category="head"
+                subCategory="details"
+                field="buttons_and_knobs"
+                value={formData.head.details.buttons_and_knobs}
+                onChange={(e) => handleChange(e, 'head', 'details', 'buttons_and_knobs')}
+                handleRandomField={handleRandomField}
+              />
+            </div>
+          </div>
 
-      <div>
-        <h2 className="text-xl font-semibold mb-2">{t('Body')}</h2>
-        <div className="space-y-2">
-          <Label htmlFor="body-clothing">{t('Clothing')}</Label>
-          <InputWithRandom
-            category="body"
-            field="clothing"
-            value={formData.body.clothing}
-            onChange={(e) => handleChange(e, 'body', 'clothing')}
-            handleRandomField={handleRandomField}
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="body-accessories">{t('Accessories')}</Label>
-          <InputWithRandom
-            category="body"
-            field="accessories"
-            value={formData.body.accessories}
-            onChange={(e) => handleChange(e, 'body', 'accessories')}
-            handleRandomField={handleRandomField}
-          />
-        </div>
-      </div>
+          <div>
+            <h2 className="text-xl font-semibold mb-2">{t('Body')}</h2>
+            <div className="space-y-2">
+              <Label htmlFor="body-clothing">{t('Clothing')}</Label>
+              <InputWithRandom
+                category="body"
+                field="clothing"
+                value={formData.body.clothing}
+                onChange={(e) => handleChange(e, 'body', 'clothing')}
+                handleRandomField={handleRandomField}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="body-accessories">{t('Accessories')}</Label>
+              <InputWithRandom
+                category="body"
+                field="accessories"
+                value={formData.body.accessories}
+                onChange={(e) => handleChange(e, 'body', 'accessories')}
+                handleRandomField={handleRandomField}
+              />
+            </div>
+          </div>
 
 
-      <div>
-        <h2 className="text-xl font-semibold mb-2">{t('Legs')}</h2>
-        <div className="space-y-2">
-          <Label htmlFor="legs-style">{t('Style')}</Label>
-          <InputWithRandom
-            category="legs"
-            field="style"
-            value={formData.legs.style}
-            onChange={(e) => handleChange(e, 'legs', 'style')}
-            handleRandomField={handleRandomField}
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="legs-shoes">{t('Shoes')}</Label>
-          <InputWithRandom
-            category="legs"
-            field="shoes"
-            value={formData.legs.shoes}
-            onChange={(e) => handleChange(e, 'legs', 'shoes')}
-            handleRandomField={handleRandomField}
-          />
-        </div>
-      </div>
+          <div>
+            <h2 className="text-xl font-semibold mb-2">{t('Legs')}</h2>
+            <div className="space-y-2">
+              <Label htmlFor="legs-style">{t('Style')}</Label>
+              <InputWithRandom
+                category="legs"
+                field="style"
+                value={formData.legs.style}
+                onChange={(e) => handleChange(e, 'legs', 'style')}
+                handleRandomField={handleRandomField}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="legs-shoes">{t('Shoes')}</Label>
+              <InputWithRandom
+                category="legs"
+                field="shoes"
+                value={formData.legs.shoes}
+                onChange={(e) => handleChange(e, 'legs', 'shoes')}
+                handleRandomField={handleRandomField}
+              />
+            </div>
+          </div>
 
-      <div>
-        <h2 className="text-xl font-semibold mb-2">{t('Overall Style')}</h2>
-        <div className="space-y-2">
-          <Label htmlFor="overall_style-color_tone">{t('Color Tone')}</Label>
-          <InputWithRandom
-            category="overall_style"
-            field="color_tone"
-            value={formData.overall_style.color_tone}
-            onChange={(e) => handleChange(e, 'overall_style', 'color_tone')}
-            handleRandomField={handleRandomField}
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="overall_style-material">{t('Material')}</Label>
-          <InputWithRandom
-            category="overall_style"
-            field="material"
-            value={formData.overall_style.material}
-            onChange={(e) => handleChange(e, 'overall_style', 'material')}
-            handleRandomField={handleRandomField}
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="overall_style-composition">{t('Composition')}</Label>
-          <InputWithRandom
-            category="overall_style"
-            field="composition"
-            value={formData.overall_style.composition}
-            onChange={(e) => handleChange(e, 'overall_style', 'composition')}
-            handleRandomField={handleRandomField}
-          />
-        </div>
-      </div>
+          <div>
+            <h2 className="text-xl font-semibold mb-2">{t('Overall Style')}</h2>
+            <div className="space-y-2">
+              <Label htmlFor="overall_style-color_tone">{t('Color Tone')}</Label>
+              <InputWithRandom
+                category="overall_style"
+                field="color_tone"
+                value={formData.overall_style.color_tone}
+                onChange={(e) => handleChange(e, 'overall_style', 'color_tone')}
+                handleRandomField={handleRandomField}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="overall_style-material">{t('Material')}</Label>
+              <InputWithRandom
+                category="overall_style"
+                field="material"
+                value={formData.overall_style.material}
+                onChange={(e) => handleChange(e, 'overall_style', 'material')}
+                handleRandomField={handleRandomField}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="overall_style-composition">{t('Composition')}</Label>
+              <InputWithRandom
+                category="overall_style"
+                field="composition"
+                value={formData.overall_style.composition}
+                onChange={(e) => handleChange(e, 'overall_style', 'composition')}
+                handleRandomField={handleRandomField}
+              />
+            </div>
+          </div>
+        </>
+      )}
 
       <div className="space-y-2">
         <Checkbox label={t('Generate 20 Images')}

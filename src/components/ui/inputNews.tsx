@@ -1,7 +1,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from '@/components/ui/button';
-import { Key } from 'lucide-react';
+import { Lightbulb } from 'lucide-react';
 
 export interface InputNewsProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   onSubmit: () => void;
@@ -20,7 +20,7 @@ const InputNews = React.forwardRef<HTMLTextAreaElement, InputNewsProps>(({ class
       <div className="flex justify-between items-center">
         <div className="text-lg font-medium">{label}</div>
         <button onClick={toggleCollapse} className="focus:outline-none">
-          <Key className={`transition-transform ${isCollapsed ? '' : 'rotate-180'}`} />
+          <Lightbulb className={`transition-transform ${isCollapsed ? '' : 'rotate-180'}`} />
         </button>
       </div>
       {!isCollapsed && (

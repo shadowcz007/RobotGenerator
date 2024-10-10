@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { Globe } from 'lucide-react';
 
 const LanguageToggle: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -12,9 +13,10 @@ const LanguageToggle: React.FC = () => {
 
   return (
     <button onClick={toggleLanguage} className="bg-card shadow-md rounded-lg p-2">
-      {t(i18n.language === 'en' ? 'Switch to Chinese' : 'Switch to English')}
+      <Globe className="h-5 w-5" />
     </button>
   );
 };
 
 export default LanguageToggle;
+

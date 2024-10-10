@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Key } from 'lucide-react'; // 使用 lucide-react 库
 
 const ApiKeyInput = ({ label }: any) => {
-    const [isCollapsed, setIsCollapsed] = useState(true);
+    const [isCollapsed, setIsCollapsed] = useState(false);
 
     const toggleCollapse = () => {
         setIsCollapsed(!isCollapsed);
