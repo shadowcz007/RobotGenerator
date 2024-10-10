@@ -31,7 +31,8 @@ const InputNews = React.forwardRef<HTMLTextAreaElement, InputNewsProps>(({ class
           <Lightbulb className={`transition-transform ${isCollapsed ? '' : 'rotate-180'}`} />
         </button>
       </div>
-      {!isCollapsed && (
+
+      {isLoading ? <Loading /> : !isCollapsed && (
         <div className="space-y-2 mt-4">
           <textarea
             className={cn(
@@ -51,13 +52,14 @@ const InputNews = React.forwardRef<HTMLTextAreaElement, InputNewsProps>(({ class
           <Button
             type="button"
             onClick={handleSubmit}
-            variant="outline" 
+            variant="outline"
             disabled={isLoading}
           >
-            {isLoading ? <Loading /> : label}
+            {label}
           </Button>
         </div>
       )}
+
     </div>
   );
 });
