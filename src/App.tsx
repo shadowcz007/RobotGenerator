@@ -14,7 +14,7 @@ import { Settings } from 'lucide-react';
 
 import './i18n'; // 引入 i18n 配置
 import { translateToEn, generateImage, moreSimilarText, writeXHSText, createByNews } from '@/utils/ai'
-import { updateJSON } from '@/lib/utils'
+import { updateRobotJSON } from '@/lib/utils'
 
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -132,7 +132,7 @@ function App() {
       const newRobot = await createByNews(newsInput, apiKey);
       if (newRobot) {
         let data: any = { ...robot }
-        data = updateJSON(data, newRobot)
+        data = updateRobotJSON(data, newRobot)
         console.log(newRobot)
         setRobot(data)
       }
