@@ -139,7 +139,6 @@ function App() {
         if (!deepEqual(data, robot)) {
           handleSubmit({ data, generateMultiple: false })
         }
-
       }
     }
   };
