@@ -18,9 +18,11 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
         </button>
         <h2 className="text-xl font-semibold mb-4">Settings</h2>
         <ApiKeyInput label="Siliconflow API Key" />
-        <a href="https://cloud.siliconflow.cn/i/qY5gxZhQ"
-        target='_blank'
-        >Siliconflow</a>
+        <div className="mt-4">
+          <a href="https://www.siliconflow.cn" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+            Visit Siliconflow
+          </a>
+        </div>
       </div>
     </div>
   );

@@ -43,8 +43,7 @@ const InputNews = React.forwardRef<HTMLTextAreaElement, InputNewsProps>(({ class
           <Button
             type="button"
             onClick={onSubmit}
-            variant="outline"
-            size="icon"
+            variant="outline" 
           >
             {label}
           </Button>

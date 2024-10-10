@@ -156,6 +156,14 @@ function App() {
         <div className="flex flex-col lg:flex-row gap-8">
           <div className="w-full lg:w-1/2">
 
+          <InputNews
+            placeholder={t('Enter news text here...')}
+            value={newsInput}
+            onChange={(e) => setNewsInput(e.target.value)}
+            onSubmit={handleNewsSubmit}
+            label={t('Submit News')}
+          />
+          
             <div className="bg-card shadow-md rounded-lg p-6">
               {robot && <RobotForm initialData={robot} onSubmit={handleSubmit} callback={handleCallback} />}
             </div>
@@ -192,22 +200,7 @@ function App() {
               </div>
             </div>
           </div>
-        </div>
-        <div className="mt-8 flex items-center">
-          <InputNews
-            placeholder={t('Enter news text here...')}
-            value={newsInput}
-            onChange={(e) => setNewsInput(e.target.value)}
-            onSubmit={handleNewsSubmit}
-            label={t('Submit News')}
-          />
-        </div>
-        {newsResult && (
-          <div className="mt-4 p-4 bg-gray-200 rounded">
-            <h2 className="text-xl font-semibold mb-2">{t('News Result:')}</h2>
-            <p>{newsResult}</p>
-          </div>
-        )}
+        </div> 
       </div>
       <SettingsModal isOpen={isSettingsModalOpen} onClose={() => setIsSettingsModalOpen(false)} />
     </div>
