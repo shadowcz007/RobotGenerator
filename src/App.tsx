@@ -101,6 +101,7 @@ function App() {
     const imgurl = await generateImage(`A human with a head resembling a vintage computer. ${description}`, apiKey);
     if (imgurl) {
       setGeneratedImage(imgurl);
+      setMoreImages([]); // Add the generated image to the gallery
     }
 
     if (generateMultiple) {
@@ -172,7 +173,7 @@ function App() {
             </div>
 
           </div>
-          <div className="w-full lg:w-1/2">
+          <div className="w-full lg:w-1/2 sticky top-0" id="result">
 
             <div className="bg-card shadow-md rounded-lg p-6 flex flex-col justify-between items-center">
 
@@ -187,18 +188,18 @@ function App() {
                   generatedImage ? (
                     <>
                       <h2 className="text-2xl font-semibold mb-4">{t('Generated Robot:')}</h2>
-                      <img src={generatedImage} alt="Generated Robot" className="rounded-lg shadow-md max-w-full h-auto" />
+                      <ImageGallery mainImage={generatedImage || ''} moreImages={moreImages} width={512} height={512} />
                     </>
                   ) : (
                     <Loading />
                   )
                 )}
                 <br />
-                {moreImages.length > 0 && <ImageGallery images={moreImages} width={768} height={768} />}
+
               </div>
             </div>
 
-            
+
             <WriteButton label={t('Prompt')}
               initialPrompt={prompt}
               onWrite={handleWrite} />
