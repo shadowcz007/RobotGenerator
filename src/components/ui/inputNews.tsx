@@ -3,15 +3,17 @@ import { cn } from "@/lib/utils";
 import { Button } from '@/components/ui/button';
 import { Lightbulb } from 'lucide-react';
 import { Loading } from '@/components/ui/loading';
+import { deepEqual } from '@/lib/utils';
 
 export interface InputNewsProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  onSubmit: () => void;
+  onSubmit: () => Promise<any>;
   label: string;
 }
 
 const InputNews = React.forwardRef<HTMLTextAreaElement, InputNewsProps>(({ className, onSubmit, label, ...props }, ref) => {
   const [isCollapsed, setIsCollapsed] = React.useState(true);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [message, setMessage] = React.useState<string | null>(null);
 
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
@@ -19,8 +21,15 @@ const InputNews = React.forwardRef<HTMLTextAreaElement, InputNewsProps>(({ class
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    await onSubmit();
+    const oldData = {}; // Replace with actual old data
+    const newData = await onSubmit();
     setIsLoading(false);
+
+    if (deepEqual(oldData, newData)) {
+      setMessage("No updates were made.");
+    } else {
+      setMessage("Data updated successfully.");
+    }
   };
 
   return (
@@ -57,6 +66,7 @@ const InputNews = React.forwardRef<HTMLTextAreaElement, InputNewsProps>(({ class
           >
             {label}
           </Button>
+          {message && <div className="mt-2 text-sm">{message}</div>}
         </div>
       )}
 

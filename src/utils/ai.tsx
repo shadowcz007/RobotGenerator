@@ -197,7 +197,7 @@ export async function writeXHSText(texts: any, apiKey: string) {
 
 export async function createByNews(text: string, apiKey: any) {
     let prompt = `
-根据输入的任意一段[文字]，提炼核心信息，推理创建合适的着装打扮，结构参考要求如下：
+根据输入的任意一段[文字]，提炼核心信息，推测出合适的着装打扮，结构参考要求如下：
 
 *   每个值都是唯一的string类型
 *   最终结果用json格式输出

@@ -14,7 +14,7 @@ import { Settings } from 'lucide-react';
 
 import './i18n'; // 引入 i18n 配置
 import { translateToEn, generateImage, moreSimilarText, writeXHSText, createByNews } from '@/utils/ai'
-import { updateRobotJSON } from '@/lib/utils'
+import { updateRobotJSON, deepEqual } from '@/lib/utils'
 
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -134,8 +134,12 @@ function App() {
       if (newRobot) {
         let data: any = { ...robot }
         data = updateRobotJSON(data, newRobot)
-        console.log(newRobot)
+        // console.log(newRobot)
         setRobot(data)
+        if (!deepEqual(data, robot)) {
+          handleSubmit({ data, generateMultiple: false })
+        }
+
       }
     }
   };
@@ -188,10 +192,10 @@ function App() {
                   generatedImage ? (
                     <>
                       <h2 className="text-2xl font-semibold mb-4">{t('Generated Robot:')}</h2>
-                      <ImageGallery mainImage={generatedImage || ''} moreImages={moreImages} width={512} height={512} 
-                      label={t('Prompt')}
-                      initialPrompt={prompt}
-                      onWrite={handleWrite} 
+                      <ImageGallery mainImage={generatedImage || ''} moreImages={moreImages} width={512} height={512}
+                        label={t('Prompt')}
+                        initialPrompt={prompt}
+                        onWrite={handleWrite}
                       />
                     </>
                   ) : (
