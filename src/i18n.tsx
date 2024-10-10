@@ -6,6 +6,7 @@ import { initReactI18next } from 'react-i18next';
 const resources = {
   en: {
     translation: {
+      "Submit News": "Submit News",
       "Siliconflow API Key": "Siliconflow API Key",
       "Submit": "Submit",
       "Prompt": "Prompt:",
@@ -35,6 +36,7 @@ const resources = {
   },
   zh: {
     translation: {
+      "Submit News": "输入热门事件",
       "Siliconflow API Key": "Siliconflow API密钥",
       "Submit": "提交",
       "Prompt": "提示词:",
