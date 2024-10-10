@@ -6,7 +6,7 @@ import { Cpu } from 'lucide-react';
 import DefaultImage from '@/components/DefaultImage';
 import { Loading } from "@/components/ui/loading"
 import ImageGallery from '@/components/ui/ImageGallery';
-import WriteButton from '@/components/ui/buttonWrite';
+
 import LanguageToggle from '@/components/LanguageToggle';
 import { InputNews } from '@/components/ui/inputNews';
 import SettingsModal from '@/components/SettingsModal';
@@ -188,7 +188,11 @@ function App() {
                   generatedImage ? (
                     <>
                       <h2 className="text-2xl font-semibold mb-4">{t('Generated Robot:')}</h2>
-                      <ImageGallery mainImage={generatedImage || ''} moreImages={moreImages} width={512} height={512} />
+                      <ImageGallery mainImage={generatedImage || ''} moreImages={moreImages} width={512} height={512} 
+                      label={t('Prompt')}
+                      initialPrompt={prompt}
+                      onWrite={handleWrite} 
+                      />
                     </>
                   ) : (
                     <Loading />
@@ -198,12 +202,6 @@ function App() {
 
               </div>
             </div>
-
-
-            <WriteButton label={t('Prompt')}
-              initialPrompt={prompt}
-              onWrite={handleWrite} />
-
           </div>
         </div>
       </div>
