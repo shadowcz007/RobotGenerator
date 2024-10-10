@@ -31,7 +31,7 @@ function getLocalStorageItem(key: string, defaultValue: any = null) {
 }
 
 function App() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [robot, setRobot] = useState<Robot | null>(null);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [moreImages, setMoreImages] = useState<string[]>([]);
@@ -158,7 +158,7 @@ function App() {
 
       <div className="container mx-auto">
         <div className="flex flex-col lg:flex-row gap-8">
-          <div className="w-full lg:w-1/2">
+          <div className="w-full lg:w-1/3">
 
             <InputNews
               placeholder={t('Enter news text here...')}
@@ -173,7 +173,7 @@ function App() {
             </div>
 
           </div>
-          <div className="w-full lg:w-1/2 sticky top-0" id="result">
+          <div className="w-full lg:w-2/3 sticky top-0" id="result">
 
             <div className="bg-card shadow-md rounded-lg p-6 flex flex-col justify-between items-center">
 

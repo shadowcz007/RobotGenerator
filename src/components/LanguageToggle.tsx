@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Globe } from 'lucide-react';
 
 const LanguageToggle: React.FC = () => {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
 
   const toggleLanguage = () => {
     const newLanguage = i18n.language === 'en' ? 'zh' : 'en';
