@@ -143,7 +143,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-100 text-foreground p-4">
-      <header className="flex justify-between items-center" >
+      <div className="flex justify-between items-center sticky top-0 bg-gray-100 z-10">
         <h1 className="text-3xl font-bold mb-6 flex items-center justify-center">
           <Cpu className="mr-2" /> {t('Robot Generator')}
         </h1>
@@ -153,7 +153,7 @@ function App() {
             <Settings className="h-5 w-5" />
           </button>
         </div>
-      </header>
+      </div>
 
       <div className="container mx-auto">
         <div className="flex flex-col lg:flex-row gap-8">
@@ -198,7 +198,7 @@ function App() {
               </div>
             </div>
 
-
+            
             <WriteButton label={t('Prompt')}
               initialPrompt={prompt}
               onWrite={handleWrite} />
