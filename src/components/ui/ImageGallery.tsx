@@ -41,11 +41,19 @@ const ImageGallery = ({ mainImage, moreImages, width, height, label, initialProm
     e.currentTarget.style.transform = 'scale(1)'; // Zoom out on mouse out
   };
 
+  const mainImageStyle: React.CSSProperties = {
+    display: 'flex',
+    alignItems: 'start',
+    justifyContent: 'center',
+    gap: '10px', // Add some space between the image and the button
+    marginBottom: '20px',
+  };
+
   return (
     <div>
 
       <Gallery>
-        <div className="main-image" style={{ textAlign: 'center', marginBottom: '20px' }}>
+        <div className="main-image" style={mainImageStyle}>
 
           <Item key={0}
             original={mainImage}
