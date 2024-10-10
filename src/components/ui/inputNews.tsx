@@ -2,6 +2,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from '@/components/ui/button';
 import { Lightbulb } from 'lucide-react';
+import { Loading } from '@/components/ui/loading';
 
 export interface InputNewsProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   onSubmit: () => void;
@@ -10,9 +11,16 @@ export interface InputNewsProps extends React.TextareaHTMLAttributes<HTMLTextAre
 
 const InputNews = React.forwardRef<HTMLTextAreaElement, InputNewsProps>(({ className, onSubmit, label, ...props }, ref) => {
   const [isCollapsed, setIsCollapsed] = React.useState(true);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
+  };
+
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    await onSubmit();
+    setIsLoading(false);
   };
 
   return (
@@ -42,10 +50,11 @@ const InputNews = React.forwardRef<HTMLTextAreaElement, InputNewsProps>(({ class
           />
           <Button
             type="button"
-            onClick={onSubmit}
+            onClick={handleSubmit}
             variant="outline" 
+            disabled={isLoading}
           >
-            {label}
+            {isLoading ? <Loading /> : label}
           </Button>
         </div>
       )}
