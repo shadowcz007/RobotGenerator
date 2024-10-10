@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Robot, generateRandomRobot, getBasic, getBasicKeywords, Keywords } from '../utils/robotGenerator';
 import { Shuffle, ChevronDown } from 'lucide-react';
@@ -20,6 +20,10 @@ const RobotForm: React.FC<RobotFormProps> = ({ initialData, onSubmit, callback }
   const [isCollapsed, setIsCollapsed] = React.useState(true);
   //更多的种子词
   const moreKeywords = new Keywords()
+
+  useEffect(() => {
+    setFormData(initialData);
+  }, [initialData]);
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>, category: keyof Robot, subCategory?: string, field?: string) => {
     const { value } = e.target;

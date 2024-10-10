@@ -15,4 +15,5 @@ export function updateJSON(oldJSON:any, newJSON:any) {
           }
       }
   }
+  return oldJSON
 }

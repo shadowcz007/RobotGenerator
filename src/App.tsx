@@ -131,8 +131,10 @@ function App() {
     if (apiKey && newsInput) {
       const newRobot = await createByNews(newsInput, apiKey);
       if (newRobot) {
-        updateJSON(robot, newRobot)
+        let data: any = { ...robot }
+        data = updateJSON(data, newRobot)
         console.log(newRobot)
+        setRobot(data)
       }
     }
   };
