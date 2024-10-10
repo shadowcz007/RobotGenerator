@@ -13,7 +13,8 @@ import SettingsModal from '@/components/SettingsModal';
 import { Settings } from 'lucide-react';
 
 import './i18n'; // 引入 i18n 配置
-import { translateToEn, generateImage, moreSimilarText, writeXHSText, generateText } from './utils/ai'
+import { translateToEn, generateImage, moreSimilarText, writeXHSText, createByNews } from '@/utils/ai'
+import { updateJSON } from '@/lib/utils'
 
 function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -37,7 +38,6 @@ function App() {
   const [prompt, setPrompt] = useState<string>(localStorage.getItem("_prompt") || "");
   const [init, setInit] = useState<boolean>(true);
   const [newsInput, setNewsInput] = useState<string>("");
-  const [newsResult, setNewsResult] = useState<string>("");
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -129,9 +129,10 @@ function App() {
   const handleNewsSubmit = async () => {
     const apiKey = localStorage.getItem("_apiKey") || "";
     if (apiKey && newsInput) {
-      const result = await generateText(newsInput, apiKey);
-      if (result) {
-        setNewsResult(result);
+      const newRobot = await createByNews(newsInput, apiKey);
+      if (newRobot) {
+        updateJSON(robot, newRobot)
+        console.log(newRobot)
       }
     }
   };
@@ -156,14 +157,14 @@ function App() {
         <div className="flex flex-col lg:flex-row gap-8">
           <div className="w-full lg:w-1/2">
 
-          <InputNews
-            placeholder={t('Enter news text here...')}
-            value={newsInput}
-            onChange={(e) => setNewsInput(e.target.value)}
-            onSubmit={handleNewsSubmit}
-            label={t('Submit News')}
-          />
-          
+            <InputNews
+              placeholder={t('Enter news text here...')}
+              value={newsInput}
+              onChange={(e) => setNewsInput(e.target.value)}
+              onSubmit={handleNewsSubmit}
+              label={t('Submit News')}
+            />
+
             <div className="bg-card shadow-md rounded-lg p-6">
               {robot && <RobotForm initialData={robot} onSubmit={handleSubmit} callback={handleCallback} />}
             </div>
@@ -200,7 +201,7 @@ function App() {
               </div>
             </div>
           </div>
-        </div> 
+        </div>
       </div>
       <SettingsModal isOpen={isSettingsModalOpen} onClose={() => setIsSettingsModalOpen(false)} />
     </div>

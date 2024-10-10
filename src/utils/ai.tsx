@@ -195,6 +195,145 @@ export async function writeXHSText(texts: any, apiKey: string) {
     return
 }
 
+export async function createByNews(text: string, apiKey: any) {
+    let prompt = `
+    根据输入的一段\[文字\]，创建合适的着装打扮，最终结果用JSON格式输出。
+
+    Steps
+    =====
+
+    1.  分析输入文字，提取相关信息，如性别、场合、季节等。
+    2.  根据提取的信息，设计头部、身体、腿部和整体风格的着装细节。
+    3.  将设计的着装细节按照指定结构组织。
+    4.  用JSON格式输出最终结果。
+
+    Output Format
+    =============
+
+    JSON格式，包含以下结构：
+
+    {
+    "head": {
+        "color": "[颜色]",
+        "shape": "[形状]",
+        "details": {
+        "screen": "[屏幕详情]",
+        "buttons_and_knobs": "[按键和旋钮]"
+        }
+    },
+    "body": {
+        "clothing": "[服装描述]",
+        "accessories": "[配件描述]"
+    },
+    "legs": {
+        "style": "[裤子风格]",
+        "shoes": "[鞋子描述]"
+    },
+    "overall_style": {
+        "color_tone": "[色调]",
+        "material": "[材质]",
+        "composition": "[构图]"
+    }
+    }
+
+    Examples
+    ========
+
+    ### Example 1
+
+    #### Input
+
+    一段描述文字: "这是一场科技展览会，参与者需要穿着未来感十足的服装。"
+
+    #### Output
+
+    {
+    "head": {
+        "color": "银色",
+        "shape": "流线型头盔",
+        "details": {
+        "screen": "显示字母'TECH'",
+        "buttons_and_knobs": "蓝色发光按键"
+        }
+    },
+    "body": {
+        "clothing": "银色的紧身衣",
+        "accessories": "手腕上的全息投影仪"
+    },
+    "legs": {
+        "style": "银色的高腰裤",
+        "shoes": "银色的金属靴子"
+    },
+    "overall_style": {
+        "color_tone": "冷色调",
+        "material": "光滑金属质感",
+        "composition": "未来感十足的整体造型"
+    }
+    }
+
+    ### Example 2
+
+    #### Input
+
+    一段描述文字: "这是一个户外音乐节，参与者需要穿着舒适且有时尚感的服装。"
+
+    #### Output
+
+    {
+    "head": {
+        "color": "白色",
+        "shape": "棒球帽",
+        "details": {
+        "screen": "无",
+        "buttons_and_knobs": "无"
+        }
+    },
+    "body": {
+        "clothing": "印有图案的宽松T恤",
+        "accessories": "太阳镜"
+    },
+    "legs": {
+        "style": "牛仔短裤",
+        "shoes": "运动鞋"
+    },
+    "overall_style": {
+        "color_tone": "明亮、活泼的色调",
+        "material": "轻便、透气的材质",
+        "composition": "舒适且时尚的整体造型"
+    }
+    }
+
+    Notes
+    =====
+
+    *   输入文字中可能包含多种信息，请确保全面分析以提取相关信息。
+    *   设计的着装应符合场合和季节等因素。
+    *   JSON输出需保持一致的格式和结构。`.trim()
+
+    let data = await generateText(text,
+        apiKey,
+        0.7,
+        3248,
+        false,
+        prompt
+    )
+
+    try {
+        if (data) {
+            data = data.match(/{[^]*}/)[0]
+            data = jsonrepair(data.trim())
+            data = JSON.parse(data)
+        }
+    } catch (error) {
+        console.log(error)
+    }
+
+    if (data && typeof(data)=='object') {
+        return data
+    }
+    return
+}
+
 export async function generateImage(prompt: string, apiKey: string) {
     const options = {
         method: 'POST',
