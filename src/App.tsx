@@ -135,8 +135,12 @@ function App() {
         let data: any = { ...robot }
         data = updateRobotJSON(data, newRobot)
         // console.log(newRobot)
-        setRobot(data)
-        if (!deepEqual(data, robot)) {
+        let isEqual = data===robot
+        console.log(isEqual)
+
+        // setRobot(data)
+
+        if (!isEqual) {
           handleSubmit({ data, generateMultiple: false })
         }
       }
