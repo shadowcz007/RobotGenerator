@@ -47,6 +47,16 @@ export function deepEqual (obj1:any, obj2:any) {
     return false
   }
 
+  let v1 = Object.values(obj1)
+  let v2 = Object.values(obj2)
+
+  if (v1.length !== v2.length) {
+    return false
+  }
+  if (v1.join("") !== v2.join("")) {
+    return false
+  }
+
   for (let key of keys1) {
     if (!keys2.includes(key) || !deepEqual(obj1[key], obj2[key])) {
       return false
